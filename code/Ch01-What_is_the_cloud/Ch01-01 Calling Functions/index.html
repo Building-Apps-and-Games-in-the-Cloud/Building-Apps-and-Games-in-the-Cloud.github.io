@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <h1>Make Something Happen : Explore functions in the console</h1>
+  <p>This exercise demonstrates how functions are called, and how functions are actually objects in JavaScript.
+    The JavaScript in this page contains some functions that you can call from the browser Developer Tools console. 
+    The Developer Tools Console is available in the Edge, Chrome and Chromium browsers. 
+  </p>
+  <p>
+    To open Developer Tools in the browser press the F12 key. If your keyboard does not have that key, hold down the CTRL and SHIFT keys and press J
+  </p>
+  <p>The console will appear on the right of the page. You may need to confirm that you want to open it. </p>
+  <p>You can find the steps to follow for the exercise in Chapter 1 of the book in the section &quot;Make Something
+    Happen - Explore functions in the console&quot;</p>
+
+  <script type="text/javascript">
+    function doAddition(no1Number, no2Number) {
+      let result = no1Number + no2Number;
+      alert("Result: " + result);
+    }
+
+    function doTwoAdditions() {
+      doAddition(1, 2);
+      doAddition(3, 4);
+    }
+
+    function doFunctionCall(functionToCall, n1, n2) {
+      functionToCall(n1, n2);
+    }
+  </script>
+</body>
+
+</html>
