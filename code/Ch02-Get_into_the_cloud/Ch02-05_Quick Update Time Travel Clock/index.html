@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Quick Update Time Travel Clock</title>
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body onload="startClock();">
+  <p id="timePar" class="clock">0:0:0</p>
+
+  <p>
+    <button onclick="selectFastClock();">Fast Clock</button>
+  </p>
+  <p>
+    <button onclick="selectSlowClock();">Slow Clock</button>
+  </p>
+  <p>
+    <button onclick="selectNormalClock();">Normal Clock</button>
+  </p>
+
+  <script type="text/javascript">
+
+    var minutesOffset = 0;
+
+    function selectFastClock() {
+      minutesOffset = 5;
+      tick();
+    }
+
+    function selectSlowClock() {
+      minutesOffset = -5;
+      tick();
+    }
+
+    function selectNormalClock() {
+      minutesOffset = 0;
+      tick();
+    }
+
+    function tick() {
+      let timeString = getTimeString();
+      showMessage(timeString);
+    }
+
+    function startClock() {
+      setInterval(tick, 1000);
+    }
+
+    function getTimeString() {
+      let currentDate = new Date();
+      let displayMins = currentDate.getMinutes() + minutesOffset;
+      currentDate.setMinutes(displayMins);
+      let hours = currentDate.getHours();
+      let mins = currentDate.getMinutes();
+      let secs = currentDate.getSeconds();
+      let timeString = hours + ":" + mins + ":" + secs;
+      return timeString;
+    }
+
+    function showMessage(message) {
+      let outputElement = document.getElementById("timePar");
+      outputElement.textContent = message;
+    }
+  </script>
+</body>
+
+</html>

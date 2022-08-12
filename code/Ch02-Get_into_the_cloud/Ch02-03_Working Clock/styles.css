@@ -1,0 +1,16 @@
+h1 {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 20;
+}
+
+
+p {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 20;
+}
+
+.clock {
+  font-size: 10em;
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
+}

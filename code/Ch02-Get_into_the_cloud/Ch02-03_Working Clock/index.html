@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Working Clock</title>
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body onload="startClock();">
+  <p id="timePar" class="clock">0:0:0</p>
+
+  <script type="text/javascript">
+
+    function tick() {
+      let timeString = getTimeString();
+      showMessage(timeString);
+    }
+
+    function startClock() {
+      setInterval(tick, 1000);
+    }
+
+    function getTimeString() {
+      let currentDate = new Date();
+      let hours = currentDate.getHours();
+      let mins = currentDate.getMinutes();
+      let secs = currentDate.getSeconds();
+      let timeString = hours + ":" + mins + ":" + secs;
+      return timeString;
+    }
+
+    function showMessage(message) {
+      let outputElement = document.getElementById("timePar");
+      outputElement.textContent = message;
+    }
+  </script>
+</body>
+
+</html>
