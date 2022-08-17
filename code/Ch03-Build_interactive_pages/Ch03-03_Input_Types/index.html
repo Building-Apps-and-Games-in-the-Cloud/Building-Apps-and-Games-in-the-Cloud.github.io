@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Input Types</title>
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body onload="startClock();">
+  <h1>Some JavaScript input types</h1>
+  
+  <p id="outputPar"> inputs are displayed here</p>
+
+  <p>
+    <input type="text" id="textInput" value="">
+    <button onclick='showItem("textInput");''>text</button>
+  </p>
+
+  <p>
+    <input type="number" id="numberInput" value="">
+    <button onclick='showItem("numberInput");''>number</button>
+  </p>
+
+  <p>
+    <input type="password" id="passwordInput" value="">
+    <button onclick='showItem("passwordInput");''>password</button>
+  </p>
+
+  <p>
+    <input type="email" id="emailInput" value="">
+    <button onclick='showItem("emailInput");''>email</button>
+  </p>
+
+  <p>
+    <input type="date" id="dateInput" value="">
+    <button onclick='showItem("dateInput");''>date</button>
+  </p>
+
+  <p>
+    <input type="color" id="colorInput" value="">
+    <button onclick='showItem("colorInput");''>color</button>
+  </p>
+
+<script type="text/javascript">
+
+  function showItem(itemName){
+    let inputElement = document.getElementById(itemName);
+      let outputElement = document.getElementById("outputPar");
+      outputElement.textContent = inputElement.value;
+  }
+  </script>
+</body>
+
+</html>

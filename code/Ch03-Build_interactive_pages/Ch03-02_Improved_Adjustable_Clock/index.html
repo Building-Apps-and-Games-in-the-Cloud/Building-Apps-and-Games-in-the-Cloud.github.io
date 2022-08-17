@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Improved Adjustable Clock</title>
+  <title>Adjustable Clock</title>
   <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -17,12 +17,17 @@
 
   <script type="text/javascript">
 
-    var minutesOffset=0;
+    var minutesOffset = 0;
 
     function doReadMinutesOffsetFromPage() {
       let minutesOffsetElement = document.getElementById("minutesOffsetInput");
-      let minutesOffsetValue = minutesOffsetElement.value;
-      minutesOffset = Number(minutesOffsetValue);
+      let inputString = minutesOffsetElement.value;
+      if (inputString.length == 0) {
+        alert("Please enter an offset value");
+      }
+      else {
+        minutesOffset = Number(inputString);
+      }
     }
 
     function tick() {

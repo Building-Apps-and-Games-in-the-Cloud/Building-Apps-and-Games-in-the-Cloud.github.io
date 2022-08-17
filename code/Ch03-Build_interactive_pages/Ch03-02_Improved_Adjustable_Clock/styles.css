@@ -1,0 +1,28 @@
+h1 {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 20;
+}
+
+
+p {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 20;
+}
+
+
+.normalClock,.fastClock,.slowClock {
+  font-size: 10em;
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
+}
+
+.normalClock{
+  color: black;
+}
+.fastClock {
+  color: red;
+}
+
+.slowClock {
+  color: green;
+}
