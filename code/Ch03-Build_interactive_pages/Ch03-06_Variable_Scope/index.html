@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Variable Scope</title>
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+</head>
+
+<body>
+    <h1>Chapter 3 Sample 6</h1>
+    <p>
+        For use in the Make Something Happen: Investigate let, var and const section.
+    </p>
+    <p>
+        Open the Developer Tools console and enter the name of a function to run it.
+    </p>
+    <ul>
+        <li>letScopeDemo() - a variable declared using let in an inner block scopes out one in an outer block</li>
+        <li>varScopeDemo() - a variable declared using var in an inner block replaces one in an outer block</li>
+        <li>letDemo() - variables declared using let are not visible outside the block they are declared in</li>
+        <li>varDemo() - variables declared using var can be used outside the block they are declared in</li>
+        <li>globalDemo() - variables declared globally persist outside the block they are declared in</li>
+        <li>strictGlobalDemo() - strict mode stops you declaring global variables</li>
+        <li>constDemo() - variables declared using const cannot be changed</li>
+    </ul>
+</body>
+<script>
+
+    function letScopeDemo() {
+        let i = 99;
+        {
+            let i = 100;
+            console.log("let inner i:" + i);
+        }
+        console.log("let outer i:" + i);
+    }
+
+    function varScopeDemo() {
+        var i = 99;
+        {
+            var i = 100;
+            console.log("var inner i:" + i);
+        }
+        console.log("var outer i:" + i);
+    }
+
+    function letDemo() {
+        {
+            let i = 99;
+        }
+        console.log(i);
+    }
+
+    function varDemo() {
+        {
+            var i = 99;
+        }
+        console.log(i);
+    }
+
+    function globalDemo() {
+        {
+            i = 99;
+        }
+        console.log(i);
+    }
+
+    function strictlobalDemo() {
+        'use strict';
+        let h = 100;
+        console.log(h);
+        {
+            i = 99;
+        }
+        console.log(i);
+    }
+
+    function constDemo() {
+        {
+            const i = 99;
+            i = i + 1;
+        }
+        console.log(i);
+    }
+</script>
+
+</html>
