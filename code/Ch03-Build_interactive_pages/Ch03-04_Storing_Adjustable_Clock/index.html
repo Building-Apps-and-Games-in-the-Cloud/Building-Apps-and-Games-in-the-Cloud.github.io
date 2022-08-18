@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Const Adjustable Clock</title>
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body onload="startClock();">
+  <p id="timePar" class="normalClock">0:0:0</p>
+
+  <p>
+    <input type="number" id="minutesOffsetInput" value="">
+    <button onclick="doReadMinutesOffsetFromPage();">Minutes offset</button>
+  </p>
+
+  <script type="text/javascript">
+
+    function storeMinutesOffset(offset) {
+      localStorage.setItem("minutesOffset", String(offset));
+    }
+
+    function loadMinutesOffset() {
+      let offsetString = localStorage.getItem("minutesOffset");
+      if (offsetString == null) {
+        offsetString = "0";
+      }
+      return Number(offsetString);
+    }
+
+    function doReadMinutesOffsetFromPage() {
+      let minutesOffsetElement = document.getElementById("minutesOffsetInput");
+      let inputString = minutesOffsetElement.value;
+      if (inputString.length == 0) {
+        alert("Please enter an offset value");
+      }
+      else {
+        let minutesOffset = Number(inputString);
+        storeMinutesOffset(minutesOffset);
+      }
+    }
+
+    function tick() {
+      let timeString = getTimeString();
+      showMessage(timeString);
+    }
+
+    function startClock() {
+      setInterval(tick, 1000);
+    }
+
+    function getTimeString() {
+      let currentDate = new Date();
+      let minutesOffset = loadMinutesOffset();
+      let displayMins = currentDate.getMinutes() + minutesOffset;
+      currentDate.setMinutes(displayMins);
+      let hours = currentDate.getHours();
+      let mins = currentDate.getMinutes();
+      let secs = currentDate.getSeconds();
+      let timeString = hours + ":" + mins + ":" + secs;
+      return timeString;
+    }
+
+    function showMessage(message) {
+      let outputElement = document.getElementById("timePar");
+      outputElement.textContent = message;
+    }
+  </script>
+</body>
+
+</html>
