@@ -15,10 +15,10 @@ p {
 }
 
 .upButton{
-  background: gray;
+  background: lightblue;
 }
 .downButton {
-  background: red;
+  background: lightpink;
 }
 .explodeButton {
   background: yellow;
