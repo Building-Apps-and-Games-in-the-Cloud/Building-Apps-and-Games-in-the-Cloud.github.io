@@ -12,6 +12,8 @@ p {
 .upButton,.downButton,.explodeButton {
   font-family: 'Courier New', Courier, monospace;
   text-align: center;
+  min-width: 3em;
+  min-height: 3em;
 }
 
 .upButton{

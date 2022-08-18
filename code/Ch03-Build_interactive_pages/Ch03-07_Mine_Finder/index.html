@@ -35,10 +35,10 @@
           for (let x = 0; x < width; x++) {
             let newButton = document.createElement("button");
             newButton.className = "upButton";
-            newButton.setAttribute("onClick", "doButtonClicked(this);");
             newButton.setAttribute("x", x);
             newButton.setAttribute("y", y);
-            newButton.textContent = " X ";
+            newButton.textContent = "X";
+            newButton.setAttribute("onClick", "doButtonClicked(this);");
             container.appendChild(newButton);
           }
           let lineBreak = document.createElement("br");
