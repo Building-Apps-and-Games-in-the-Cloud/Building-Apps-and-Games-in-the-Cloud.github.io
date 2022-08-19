@@ -13,47 +13,47 @@
   <p id="outputPar"> inputs are displayed here</p>
 
   <p>
-    <input type="text" id="textInput" value="">
+    <input oninput="doOnInput(this);" type="text" id="textInput">
     <button onclick='showItem("textInput");''>text</button>
   </p>
 
   <p>
-    <input type="number" id="numberInput" value="">
+    <input type="number" id="numberInput">
     <button onclick=' showItem("numberInput");''>number</button>
   </p>
 
   <p>
-    <input type="password" id="passwordInput" value="">
+    <input type="password" id="passwordInput">
     <button onclick='showItem("passwordInput");'>password</button>
   </p>
 
   <p>
-    <input type="email" id="emailInput" value="">
+    <input type="email" id="emailInput">
     <button onclick='showItem("emailInput");'>email</button>
   </p>
 
   <p>
-    <input type="tel" id="telInput" value="">
+    <input type="tel" id="telInput">
     <button onclick='showItem("telInput");'>tel</button>
   </p>
 
   <p>
-    <input type="date" id="dateInput" value="">
+    <input type="date" id="dateInput">
     <button onclick='showItem("dateInput");'>date</button>
   </p>
 
   <p>
-    <input type="time" id="timeInput" value="">
+    <input type="time" id="timeInput">
     <button onclick='showItem("timeInput");'>time</button>
   </p>
 
   <p>
-    <input type="url" id="urlInput" value="">
+    <input type="url" id="urlInput">
     <button onclick='showItem("urlInput");'>url</button>
   </p>
 
   <p>
-    <input type="color" id="colorInput" value="">
+    <input type="color" id="colorInput">
     <button onclick='showItem("colorInput");'>color</button>
   </p>
 
@@ -65,6 +65,9 @@
       outputElement.textContent = itemName + " : " + inputElement.value;
     }
 
+    function doOnInput(element){
+      console.log(input.value);
+    }
   </script>
 </body>
 
