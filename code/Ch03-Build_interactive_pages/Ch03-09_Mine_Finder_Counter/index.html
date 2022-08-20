@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Mine Finder Events</title>
+  <title>Mine Finder Counter</title>
   <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -13,6 +13,7 @@
   <p>Take it in turns to play. Click the buttons to scan for mines. </p>
   <p>Clicked buttons show you how far away the mine is.</p>
   <p>Play to find the mine, or to avoid it.</p>
+  <p id="counterPar"></p>
 
   <p id="buttonPar"> </p>
 
@@ -20,6 +21,12 @@
 
     var mineX;
     var mineY;
+    var counter = 0;
+
+    function showCounter(){
+      let counterPar = document.getElementById("counterPar");
+      counterPar.textContent = "Tries: " + counter;
+    }
 
     function getRandom(min, max) {
       var range = max - min;
@@ -48,6 +55,7 @@
       mineX = getRandom(0, width);
       mineY = getRandom(0, height);
 
+      showCounter();
     }
 
     function buttonClickedHandler(event) {
@@ -65,7 +73,8 @@
         button.textContent = distance;
         button.className = "downButton";
       }
-
+      counter = counter + 1;
+      showCounter();
     }
   </script>
 </body>

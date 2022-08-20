@@ -23,8 +23,8 @@
 
     function getRandom(min, max) {
       var range = max - min;
-      var spots = Math.floor(Math.random() * (range)) + min;
-      return spots;
+      var result = Math.floor(Math.random() * (range)) + min;
+      return result;
     }
 
     function playGame(width, height) {
