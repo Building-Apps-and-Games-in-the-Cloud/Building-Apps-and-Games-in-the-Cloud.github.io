@@ -12,7 +12,7 @@
 
   <p>Take it in turns to play. Click the buttons to scan for mines. Clicked buttons show you how far away the mine is. Each button colour represents a particular distance.</p>
   <p>Play to find the mine, or to avoid it.</p>
-
+  <p id="counterPar"></p>
   <p id="buttonPar"> </p>
 
   <script type="text/javascript">
@@ -21,6 +21,13 @@
 
     var mineX;
     var mineY;
+
+    var counter = 0;
+
+function showCounter(){
+  let counterPar = document.getElementById("counterPar");
+  counterPar.textContent = "Tries: " + counter;
+}
 
     const colorStyles = ["exploded", "dist1", "dist2", "dist3", "dist4", "dist5", "dist6", "dist7", "dist8", "dist9", "dist10","distFar"];
 
@@ -50,6 +57,7 @@
       mineX = getRandom(0, width);
       mineY = getRandom(0, height);
       colorStyles.sort(() => Math.random() - 0.5);
+      showCounter();
     }
 
     function getMineDistance(x, y) {
@@ -89,6 +97,8 @@
       }
       else {
         setButtonColor(button);
+        counter++;
+        showCounter();
       }
     }
   </script>
