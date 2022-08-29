@@ -10,7 +10,8 @@
 
 <body onload="playGame(10,10);">
 
-  <p>Take it in turns to play. Click the buttons to scan for mines. Clicked buttons show you how far away the mine is. Each button colour represents a particular distance.</p>
+  <p>Take it in turns to play. Click the buttons to scan for mines. Clicked buttons show you how far away the mine is.
+    Each button colour represents a particular distance.</p>
   <p>Play to find the mine, or to avoid it.</p>
   <p id="counterPar"></p>
   <p id="buttonPar"> </p>
@@ -24,17 +25,17 @@
 
     var counter = 0;
 
-function showCounter(){
-  let counterPar = document.getElementById("counterPar");
-  counterPar.textContent = "Tries: " + counter;
-}
+    function showCounter() {
+      let counterPar = document.getElementById("counterPar");
+      counterPar.textContent = "Tries: " + counter;
+    }
 
-    const colorStyles = ["exploded", "dist1", "dist2", "dist3", "dist4", "dist5", "dist6", "dist7", "dist8", "dist9", "dist10","distFar"];
+    const colorStyles = ["exploded", "dist1", "dist2", "dist3", "dist4", "dist5", "dist6", "dist7", "dist8", "dist9", "dist10", "distFar"];
 
     function getRandom(min, max) {
       var range = max - min;
-      var spots = Math.floor(Math.random() * (range)) + min;
-      return spots;
+      var result = Math.floor(Math.random() * (range)) + min;
+      return result;
     }
 
     function playGame(width, height) {
@@ -67,16 +68,16 @@ function showCounter(){
       return distance;
     }
 
-    function setButtonColor(button){
+    function setButtonColor(button) {
       let x = button.getAttribute("x");
-        let y = button.getAttribute("y");
-        let distance = getMineDistance(x,y);
-        let squareStyle;
-        if (distance >= colorStyles.length) {
-          distance = colorStyles.length-1;
-        }
-        squareStyle = colorStyles[distance];
-        button.className = squareStyle;
+      let y = button.getAttribute("y");
+      let distance = getMineDistance(x, y);
+      let squareStyle;
+      if (distance >= colorStyles.length) {
+        distance = colorStyles.length - 1;
+      }
+      squareStyle = colorStyles[distance];
+      button.className = squareStyle;
     }
 
     function fillGrid() {
