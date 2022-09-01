@@ -4,4 +4,6 @@ function getRandom(min, max) {
     return result;
 }
 
-module.exports = getRandom;
+console.log("Exporting the random modules");
+
+exports.getRandom = getRandom;
