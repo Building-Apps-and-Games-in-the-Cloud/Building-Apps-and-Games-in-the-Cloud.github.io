@@ -1,4 +1,4 @@
-import {getRandom} from './randomModule.mjs';
+import {getRandom} from '/modules/randomModule.mjs';
 
 function doThrowDice() {
   let outputElement = document.getElementById("dicePar");
@@ -7,7 +7,6 @@ function doThrowDice() {
 }
 
 function doStartPage(){
-  console.log("I expect you're wondering why I asked you all here..");
   let diceButton = document.getElementById("diceButton");
   diceButton.addEventListener("click", doThrowDice);
 }
