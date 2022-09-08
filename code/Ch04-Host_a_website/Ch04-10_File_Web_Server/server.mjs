@@ -28,7 +28,8 @@ function handlePageRequest(request, response) {
                 break;
         }
 
-        fs.createReadStream(filePath).pipe(response);
+        let readStream = fs.createReadStream(filePath);
+        readStream.pipe(response);
     }
     else {
         console.log("     file not found")

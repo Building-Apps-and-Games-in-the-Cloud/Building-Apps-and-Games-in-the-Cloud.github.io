@@ -18,16 +18,16 @@ function handlePageRequest(request, response) {
         jpg: "image/jpeg",
         jpeg: "image/jpeg",
         png: "image/png",
-        tiff: "image/tiff",
-        mpg: "audio/mpeg"
+        tiff: "image/tiff"
     }
 
     if (fs.existsSync(filePath)) {
         console.log("     found file OK")
         response.statusCode = 200;
         let extension = path.extname(url);
-        let fileType = extension.slice(1).toLowerCase();
-        let contentType = fileTypeDecode[fileType];
+        extension = extension.slice(1);
+        extension = extension.toLowerCase();
+        let contentType = fileTypeDecode[extension];
         if (contentType == undefined) {
             console.log("     invalid content type")
             response.statusCode = 415;
@@ -37,7 +37,8 @@ function handlePageRequest(request, response) {
         }
         else {
             response.setHeader('Content-Type', contentType);
-            fs.createReadStream(filePath).pipe(response);
+            let readStream = fs.createReadStream(filePath);
+            readStream.pipe(response);
         }
     }
     else {
