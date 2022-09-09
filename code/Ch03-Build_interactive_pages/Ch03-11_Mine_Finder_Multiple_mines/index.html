@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Mine Finder 2 Mines</title>
+  <title>Mine Finder Multipe Mines</title>
   <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -23,11 +23,12 @@
 
     var mines;
 
-    var counter = 0;
+    var moveCounter = 0;
+    var mineCounter;
 
-    function showCounter() {
+    function showCounters() {
       let counterPar = document.getElementById("counterPar");
-      counterPar.textContent = "Tries: " + counter;
+      counterPar.textContent = "Mines:" + mineCounter + " Tries: " + moveCounter;
     }
 
     const colorStyles = ["exploded", "dist1", "dist2", "dist3", "dist4", "dist5", "dist6", "dist7", "dist8", "dist9", "dist10", "distFar"];
@@ -71,6 +72,7 @@
     }
 
     function placeMines(width,height) {
+      mineCounter = mines.length;
       for (let mineCount = 0; mineCount < mines.length; mineCount++) {
         let mine = mines[mineCount];
         let clash = false;
@@ -109,9 +111,9 @@
         container.appendChild(lineBreak);
       }
       colorStyles.sort(() => Math.random() - 0.5);
-      showCounter();
       makeMines(noOfMines);
       placeMines(width,height);
+      showCounters();
     }
 
     function setButtonColor(button,distance) {
@@ -137,13 +139,21 @@
 
     function buttonClickedHandler(event) {
       let button = event.target;
+      if (button.className != "empty"){
+        return;
+      }
       let x = button.getAttribute("x");
       let y = button.getAttribute("y");
       let distance = Mine.getDistToNearest(mines,x,y);
+      if(distance == 0){
+        mineCounter = mineCounter - 1 ;
+        if(mineCounter == 0){
+          fillGrid();
+        }
+      }
       setButtonColor(button,distance);
-      counter++;
-      showCounter();
-      fillGrid();
+      moveCounter++;
+      showCounters();
     }
   </script>
 </body>
