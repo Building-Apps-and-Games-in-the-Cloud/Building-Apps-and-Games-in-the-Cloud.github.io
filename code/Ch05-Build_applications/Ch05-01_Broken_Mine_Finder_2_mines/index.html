@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Mine Finder Color Two Mines</title>
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<h1>Mine Finder</h1>
+
+<body onload="playGame(10,10);">
+
+  <p>Take it in turns to play. Click the buttons to scan for mines. Clicked buttons show you how far away the mine is.
+    Each button colour represents a particular distance.</p>
+  <p>Play to find the mine, or to avoid it.</p>
+  <p id="counterPar"></p>
+  <p id="buttonPar"> </p>
+
+  <script type="text/javascript">
+
+    var mine1X;
+    var mine1Y;
+    var mine2X;
+    var mine2Y;
+
+    var allButtons = []
+
+    var gameMoveCounter = 0;
+    var gameMineCounter = 0;
+
+    function showCounter() {
+      let counterPar = document.getElementById("counterPar");
+      counterPar.textContent = "Tries: " + gameMoveCounter+" Mines found: " + gameMineCounter;
+    }
+
+    const colorStyles = ["white", "red", "orange", "yellow", "yellowGreen", "lightGreen", "cyan", "lightBlue", "blue", "purple", "magenta", "darkGray"];
+
+    function getRandom(min, max) {
+      var range = max - min;
+      var result = Math.floor(Math.random() * (range)) + min;
+      return result;
+    }
+
+    function shuffle(items) {
+      for (let i = 0; i < items.length; i++) {
+        let swap = getRandom(0, items.length);
+        [items[i], items[swap]] = [items[swap], items[i]];
+      }
+    }
+
+    function playGame(width, height, noOfMines) {
+
+      let container = document.getElementById("buttonPar");
+
+      for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+          let newButton = document.createElement("button");
+          newButton.className = "empty";
+          newButton.setAttribute("x", x);
+          newButton.setAttribute("y", y);
+          newButton.addEventListener("click", buttonClickedHandler);
+          newButton.textContent = "X";
+          container.appendChild(newButton);
+          allButtons.push(newButton);
+        }
+        let lineBreak = document.createElement("br");
+        container.appendChild(lineBreak);
+      }
+      mine1X = getRandom(0, width);
+      mine1Y = getRandom(0, height);
+      mine2X = getRandom(0, width);
+      mine2Y = getRandom(0, height);
+      shuffle(colorStyles);
+      showCounter();
+    }
+
+    function getMineDistance(x, y) {
+      let d1x = x - mine1X;
+      let d1y = y - mine1Y;
+      let distance1 = Math.round(Math.sqrt((d1x * d1x) + (d1y * d1y)));
+
+      let d2x = x - mine2X;
+      let d2y = y - mine2Y;
+      let distance2 = Math.round(Math.sqrt((d2x * d2x) + (d2y * d2y)));
+
+      let distance;
+
+      if(distance1 < distance2){
+        distance = distance1;
+      }
+      else {
+        distance = distance2;
+      }
+
+      return distance;
+    }
+
+    function getStyleForDistance(styles, distance) {
+      if (distance >= styles.length) {
+        distance = styles.length - 1;
+      }
+      let result = styles[distance];
+      return result;
+    }
+
+    function setButtonStyle(button) {
+      let x = button.getAttribute("x");
+      let y = button.getAttribute("y");
+      let distance = getMineDistance(x, y);
+      button.className = getStyleForDistance(colorStyles, distance);
+    }
+
+    function fillGrid(buttons) {
+      for (button of buttons) {
+        if (button.className == "empty") {
+          setButtonStyle(button);
+        }
+      }
+    }
+
+    function buttonClickedHandler(event) {
+      let button = event.target;
+
+      if (button.className != "empty") {
+        return;
+      }
+
+      setButtonStyle(button);
+
+      if (button.className == colorStyles[0]) {
+        gameMineCounter = gameMineCounter + 1;
+        if(gameMineCounter == 2){
+          showCounter();
+          fillGrid(allButtons);
+        }
+      }
+      else {
+        gameMoveCounter++;
+        showCounter();
+      }
+    }
+  </script>
+</body>
+
+</html>

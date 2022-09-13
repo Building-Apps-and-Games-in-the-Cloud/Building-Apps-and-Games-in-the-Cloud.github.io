@@ -8,6 +8,7 @@ p {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.empty,
 .gray,
 .white,
 .red,
@@ -27,8 +28,8 @@ p {
   min-height: 3em;
 }
 
-.gray {
-  background:lightgray;
+.empty {
+  background: lightgray;
 }
 
 .red {
@@ -71,10 +72,11 @@ p {
   background: magenta;
 }
 
-.darkGray {
+.darkGray{
   background: darkgray;
 }
 
 .white {
   background: white;
 }
+

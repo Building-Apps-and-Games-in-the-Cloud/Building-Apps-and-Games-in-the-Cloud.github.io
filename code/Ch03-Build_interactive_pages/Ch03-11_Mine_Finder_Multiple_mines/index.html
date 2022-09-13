@@ -20,18 +20,18 @@
   <script type="text/javascript">
 
     var seconds;
+    var gameSquares;
 
-    var mines;
-
-    var moveCounter = 0;
-    var mineCounter;
+    var gameMoveCounter;
+    var gameMinesLeft;
+    var gameNoOfMines;
 
     function showCounters() {
       let counterPar = document.getElementById("counterPar");
-      counterPar.textContent = "Mines:" + mineCounter + " Tries: " + moveCounter;
+      counterPar.textContent = "Mines left:" + gameMinesLeft + " Tries: " + gameMoveCounter;
     }
 
-    const colorStyles = ["exploded", "dist1", "dist2", "dist3", "dist4", "dist5", "dist6", "dist7", "dist8", "dist9", "dist10", "distFar"];
+    const colorStyles = ["red", "orange", "yellow", "yellowGreen", "lightGreen", "cyan", "lightBlue", "blue", "purple", "magenta", "darkGray", "white"];
 
     function getRandom(min, max) {
       var range = max - min;
@@ -39,84 +39,65 @@
       return result;
     }
 
-    class Mine {
-      constructor() {
-        this.x = 0;
-        this.y = 0;
+    function shuffle(items){
+      for(let i=0;i<items.length;i++){
+        let swap = getRandom(0,items.length);
+        [items[i], items[swap]] = [items[swap], items[i]];
       }
+    }
 
-      getDistance(x, y) {
-        let dx = x - this.x;
-        let dy = y - this.y;
-        let distance = Math.round(Math.sqrt((dx * dx) + (dy * dy)));
-        return distance;
-      }
+    function getDistance(mine, x, y) {
+      let mx = Number(mine.getAttribute("x"));
+      let my = Number(mine.getAttribute("y"));
+      let dx = mx - x;
+      let dy = my - y;
+      let distance = Math.round(Math.sqrt((dx * dx) + (dy * dy)));
+      return distance;
+    }
 
-      static getDistToNearest(mines,x,y){
-        let result = -1;
-        for(let mine of mines){
-          let distance=mine.getDistance(x,y);
-          if(result == -1 || distance < result){
-            result = distance;
-          }
+    function getDistToNearest(x, y) {
+      let result;
+      for (let mineNo = 0; mineNo < gameNoOfMines; mineNo = mineNo + 1) {
+        let mine = gameSquares[mineNo];
+        let distance = getDistance(mine, x, y);
+        if (result == undefined) {
+          result = distance;
         }
-        return result;
+        if (distance < result) {
+          result = distance;
+        }
       }
-    }
-
-    function makeMines(noOfMines) {
-      mines = [];
-      for (let i = 0; i < noOfMines; i++) {
-        mines.push(new Mine());
-      }
-    }
-
-    function placeMines(width,height) {
-      mineCounter = mines.length;
-      for (let mineCount = 0; mineCount < mines.length; mineCount++) {
-        let mine = mines[mineCount];
-        let clash = false;
-        do {
-          mine.x = getRandom(0, width);
-          mine.y = getRandom(0, height);
-          for (checkCount = 0; checkCount < mineCount; checkCount++) {
-            checkMine = mines[checkCount];
-            if (checkMine.x == mine.x && checkMine.y == mine.y) {
-              clash == true;
-              break;
-            }
-            else {
-              clash = false;
-            }
-          }
-        } while (clash);
-      }
+      return result;
     }
 
     function playGame(width, height, noOfMines) {
+      gameNoOfMines = noOfMines;
+      gameMinesLeft = noOfMines;
+      gameMoveCounter = 0;
+      gameSquares = [];
 
       let container = document.getElementById("buttonPar");
 
       for (let y = 0; y < height; y++) {
         for (let x = 0; x < width; x++) {
           let newButton = document.createElement("button");
-          newButton.className = "empty";
+          newButton.className = "gray";
           newButton.setAttribute("x", x);
           newButton.setAttribute("y", y);
           newButton.addEventListener("click", buttonClickedHandler);
           newButton.textContent = "X";
           container.appendChild(newButton);
+          gameSquares.push(newButton);
         }
         let lineBreak = document.createElement("br");
         container.appendChild(lineBreak);
       }
-      colorStyles.sort(() => Math.random() - 0.5);
-      makeMines(noOfMines);
-      placeMines(width,height);
+      shuffle(colorStyles);
+      shuffle(gameSquares);
       showCounters();
     }
 
-    function setButtonColor(button,distance) {
+    function setButtonColor(button, distance) {
       let squareStyle;
       if (distance >= colorStyles.length) {
         distance = colorStyles.length - 1;
@@ -126,33 +107,30 @@
     }
 
     function fillGrid() {
-      let container = document.getElementById("buttonPar");
-      let children = container.children;
-      for (let i = 0; i < children.length; i++) {
-        let button = children[i];
+      for (button of gameSquares) {
         let x = button.getAttribute("x");
         let y = button.getAttribute("y");
-        let distance = Mine.getDistToNearest(mines,x,y);
+        let distance = getDistToNearest(x, y);
         setButtonColor(button, distance);
       }
     }
 
     function buttonClickedHandler(event) {
       let button = event.target;
-      if (button.className != "empty"){
+      if (button.className != "gray") {
         return;
       }
       let x = button.getAttribute("x");
       let y = button.getAttribute("y");
-      let distance = Mine.getDistToNearest(mines,x,y);
-      if(distance == 0){
-        mineCounter = mineCounter - 1 ;
-        if(mineCounter == 0){
+      let distance = getDistToNearest(x, y);
+      if (distance == 0) {
+        gameMinesLeft = gameMinesLeft - 1;
+        if (gameMinesLeft == 0) {
           fillGrid();
         }
       }
-      setButtonColor(button,distance);
-      moveCounter++;
+      setButtonColor(button, distance);
+      gameMoveCounter++;
       showCounters();
     }
   </script>

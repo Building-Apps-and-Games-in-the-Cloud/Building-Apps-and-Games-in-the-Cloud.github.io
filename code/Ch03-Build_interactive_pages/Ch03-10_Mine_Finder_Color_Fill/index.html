@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Mine Finder Colors</title>
+  <title>Mine Finder Colors and Fill</title>
   <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -18,10 +18,10 @@
 
   <script type="text/javascript">
 
-    var seconds
-
     var mineX;
     var mineY;
+
+    var allButtons = []
 
     var counter = 0;
 
@@ -51,13 +51,13 @@
           newButton.addEventListener("click", buttonClickedHandler);
           newButton.textContent = "X";
           container.appendChild(newButton);
+          allButtons.push(newButton);
         }
         let lineBreak = document.createElement("br");
         container.appendChild(lineBreak);
       }
       mineX = getRandom(0, width);
       mineY = getRandom(0, height);
-      colorStyles.sort(() => Math.random() - 0.5);
       showCounter();
     }
 
@@ -68,36 +68,42 @@
       return distance;
     }
 
-    function setButtonColor(button) {
+    function getStyleForDistance(styles, distance) {
+      if (distance >= styles.length) {
+        distance = styles.length - 1;
+      }
+      let result = styles[distance];
+      return result;
+    }
+
+    function setButtonStyle(button) {
       let x = button.getAttribute("x");
       let y = button.getAttribute("y");
       let distance = getMineDistance(x, y);
-      let squareStyle;
-      if (distance >= colorStyles.length) {
-        distance = colorStyles.length - 1;
-      }
-      squareStyle = colorStyles[distance];
-      button.className = squareStyle;
+      button.className = getStyleForDistance(colorStyles, distance);
     }
 
-    function fillGrid() {
-      let container = document.getElementById("buttonPar");
-      let children = container.children;
-      for (let i = 0; i < children.length; i++) {
-        let button = children[i];
-        setButtonColor(button);
+    function fillGrid(buttons) {
+      for (button of buttons) {
+        if (button.className == "empty") {
+          setButtonStyle(button);
+        }
       }
     }
 
     function buttonClickedHandler(event) {
       let button = event.target;
-      let x = button.getAttribute("x");
-      let y = button.getAttribute("y");
-      if (x == mineX && y == mineY) {
-        fillGrid();
+
+      if (button.className != "empty") {
+        return;
+      }
+
+      setButtonStyle(button);
+
+      if (button.className == "exploded") {
+        fillGrid(allButtons);
       }
       else {
-        setButtonColor(button);
         counter++;
         showCounter();
       }

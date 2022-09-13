@@ -8,73 +8,73 @@ p {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.gray,
-.white,
-.red,
-.orange,
-.yellow,
-.yellowGreen,
-.lightGreen,
-.cyan,
-.lightBlue,
-.blue,
-.purple,
-.magenta,
-.darkGray {
+.empty,
+.exploded,
+.dist1,
+.dist2,
+.dist3,
+.dist4,
+.dist5,
+.dist6,
+.dist7,
+.dist8,
+.dist9,
+.dist10,
+.distFar {
   font-family: 'Courier New', Courier, monospace;
   text-align: center;
   min-width: 3em;
   min-height: 3em;
 }
 
-.gray {
+.empty {
   background:lightgray;
 }
 
-.red {
+.dist1 {
   background: red;
 }
 
-.orange {
+.dist2 {
   background: orange;
 }
 
-.yellow {
+.dist3 {
   background: yellow;
 }
 
-.yellowGreen {
+.dist4 {
   background: yellowgreen;
 }
 
-.lightGreen {
+.dist5 {
   background: lightgreen;
 }
 
-.cyan {
+.dist6 {
   background: cyan;
 }
 
-.lightBlue {
+.dist7 {
   background: lightblue;
 }
 
-.blue {
+.dist8 {
   background: blue;
 }
 
-.purple {
+.dist9 {
   background: purple;
 }
 
-.magenta{
+.dist10{
   background: magenta;
 }
 
-.darkGray {
+.distFar {
   background: darkgray;
 }
 
-.white {
+.exploded {
   background: white;
 }

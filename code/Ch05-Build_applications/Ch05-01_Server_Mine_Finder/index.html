@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Mine Finder Multipe Mines</title>
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<h1>Mine Finder</h1>
+
+<body onload="playGame(10,10,3);">
+
+  <p>Take it in turns to play. Click the buttons to scan for mines. Clicked buttons show you how far away the nearest
+    mine is.
+    Each button colour represents a particular distance.</p>
+  <p>Play to find the mines, or to avoid them.</p>
+  <p id="counterPar"></p>
+  <p id="buttonPar"> </p>
+
+  <script type="text/javascript">
+
+    var seconds;
+
+    var mines;
+
+    var moveCounter = 0;
+    var mineCounter;
+
+    function showCounters() {
+      let counterPar = document.getElementById("counterPar");
+      counterPar.textContent = "Mines:" + mineCounter + " Tries: " + moveCounter;
+    }
+
+    const colorStyles = ["exploded", "dist1", "dist2", "dist3", "dist4", "dist5", "dist6", "dist7", "dist8", "dist9", "dist10", "distFar"];
+
+    function getRandom(min, max) {
+      var range = max - min;
+      var result = Math.floor(Math.random() * (range)) + min;
+      return result;
+    }
+
+    class Mine {
+      constructor() {
+        this.x = 0;
+        this.y = 0;
+      }
+
+      getDistance(x, y) {
+        let dx = x - this.x;
+        let dy = y - this.y;
+        let distance = Math.round(Math.sqrt((dx * dx) + (dy * dy)));
+        return distance;
+      }
+
+      static getDistToNearest(mines, x, y) {
+        let result = -1;
+        for (let mine of mines) {
+          let distance = mine.getDistance(x, y);
+          if (result == -1 || distance < result) {
+            result = distance;
+          }
+        }
+        return result;
+      }
+    }
+
+    function makeMines(noOfMines) {
+      mines = [];
+      for (let i = 0; i < noOfMines; i++) {
+        mines.push(new Mine());
+      }
+    }
+
+    function placeMines(width, height) {
+      mineCounter = mines.length;
+      for (let mineCount = 0; mineCount < mines.length; mineCount++) {
+        let mine = mines[mineCount];
+        let clash = false;
+        do {
+          mine.x = getRandom(0, width);
+          mine.y = getRandom(0, height);
+          for (checkCount = 0; checkCount < mineCount; checkCount++) {
+            checkMine = mines[checkCount];
+            if (checkMine.x == mine.x && checkMine.y == mine.y) {
+              clash == true;
+              break;
+            }
+            else {
+              clash = false;
+            }
+          }
+        } while (clash);
+      }
+    }
+
+    function playGame(width, height, noOfMines) {
+
+      let container = document.getElementById("buttonPar");
+
+      for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+          let newButton = document.createElement("button");
+          newButton.className = "empty";
+          newButton.setAttribute("x", x);
+          newButton.setAttribute("y", y);
+          newButton.addEventListener("click", buttonClickedHandler);
+          newButton.textContent = "X";
+          container.appendChild(newButton);
+        }
+        let lineBreak = document.createElement("br");
+        container.appendChild(lineBreak);
+      }
+      colorStyles.sort(() => Math.random() - 0.5);
+      makeMines(noOfMines);
+      placeMines(width, height);
+      showCounters();
+    }
+
+    function setButtonColor(button, distance) {
+      let squareStyle;
+      if (distance >= colorStyles.length) {
+        distance = colorStyles.length - 1;
+      }
+      squareStyle = colorStyles[distance];
+      button.className = squareStyle;
+    }
+
+    function fillGrid() {
+      let container = document.getElementById("buttonPar");
+      let children = container.children;
+      for (let i = 0; i < children.length; i++) {
+        let button = children[i];
+        let x = button.getAttribute("x");
+        let y = button.getAttribute("y");
+        let distance = Mine.getDistToNearest(mines, x, y);
+        setButtonColor(button, distance);
+      }
+    }
+
+    function buttonClickedHandler(event) {
+      let button = event.target;
+      if (button.className != "empty") {
+        return;
+      }
+      let x = button.getAttribute("x");
+      let y = button.getAttribute("y");
+
+      let url = "http://localhost:8080/checkMine.json?x=" + x + "&y=" + y;
+
+      fetch(url).then(response => {
+        response.text().then(result => {
+          button.className = result;
+        }).catch(error => alert("Bad text: " + error)); // text error handler
+      }).catch(error => alert("Bad fetch: " + error)); // fetch error handler
+
+      return;
+      moveCounter++;
+      showCounters();
+    }
+  </script>
+</body>
+
+</html>
