@@ -1,0 +1,81 @@
+h1 {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 20;
+}
+
+
+p {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.empty,
+.cheese,
+.dist1,
+.dist2,
+.dist3,
+.dist4,
+.dist5,
+.dist6,
+.dist7,
+.dist8,
+.dist9,
+.dist10,
+.distFar {
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
+  min-width: 3em;
+  min-height: 3em;
+}
+
+.empty {
+  background:lightgray;
+}
+
+.cheese {
+  background: lightgoldenrodyellow;
+}
+
+.dist1 {
+  background: red;
+}
+
+.dist2 {
+  background: orange;
+}
+
+.dist3 {
+  background: yellow;
+}
+
+.dist4 {
+  background: yellowgreen;
+}
+
+.dist5 {
+  background: lightgreen;
+}
+
+.dist6 {
+  background: cyan;
+}
+
+.dist7 {
+  background: lightblue;
+}
+
+.dist8 {
+  background: blue;
+}
+
+.dist9 {
+  background: purple;
+}
+
+.dist10{
+  background: magenta;
+}
+
+.distFar {
+  background: darkgray;
+}
+

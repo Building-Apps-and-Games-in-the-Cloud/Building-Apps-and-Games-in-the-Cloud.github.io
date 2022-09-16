@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+</head>
+
+<body>
+
+  <h1>Make Something Happen : JSON investigation</h1>
+  <p>In this excercise we will be creating and decoding some JSON strings.
+  </p>
+  <p>
+    To open Developer Tools in the browser press the F12 key. If your keyboard does not have that key, hold down the
+    CTRL and SHIFT keys and press J
+  </p>
+  <p>The console will appear on the right of the page. You may need to confirm that you want to open it. </p>
+  <p>You can find the steps to follow for the exercise in Chapter 5 of the book in the section &quot;Make Something
+    Happen - Investigate JSON&quot;</p>
+
+  <script type="text/javascript">
+
+    function gameInfoToJSON(inWidth, inHeight, inNoOfCheeses) {
+      let message = {
+        width: inWidth,
+        height: inHeight, 
+        noOfCheeses: inNoOfCheeses
+      }
+      return JSON.stringify(message);
+    }
+
+    function decodeGameInfogameIrmation(text) {
+      let info = JSON.parse(text);
+      return info;
+    }
+
+  </script>
+</body>
+
+</html>

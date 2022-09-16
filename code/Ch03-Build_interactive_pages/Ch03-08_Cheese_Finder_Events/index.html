@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Cheese Finder Events</title>
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<h1>  &#129472;  Cheese Finder</h1>
+
+<body onload="playGame(10,10);">
+
+  <p>Take it in turns to play. Click the buttons to sniff for cheese. </p>
+  <p>Clicked buttons show you how far away the cheese is.</p>
+  <p>Play to find the cheese, or to avoid it.</p>
+
+  <p id="buttonPar"> </p>
+
+  <script type="text/javascript">
+
+    var cheeseX;
+    var cheeseY;
+
+    function getRandom(min, max) {
+      var range = max - min;
+      var result = Math.floor(Math.random() * (range)) + min;
+      return result;
+    }
+
+    function playGame(width, height) {
+
+      let container = document.getElementById("buttonPar");
+
+      for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+          let newButton = document.createElement("button");
+          newButton.className = "upButton";
+          newButton.setAttribute("x", x);
+          newButton.setAttribute("y", y);
+          newButton.textContent = "X";
+          newButton.addEventListener("click", buttonClickedHandler);
+          container.appendChild(newButton);
+        }
+        let lineBreak = document.createElement("br");
+        container.appendChild(lineBreak);
+      }
+
+      cheeseX = getRandom(0, width);
+      cheeseY = getRandom(0, height);
+
+    }
+
+    function buttonClickedHandler(event) {
+      let button = event.target;
+      let x = button.getAttribute("x");
+      let y = button.getAttribute("y");
+      if (x == cheeseX && y == cheeseY) {
+        button.className = "cheeseButton";
+        alert("Well done! Reload the page to play again");
+      }
+      else {
+        let dx = x - cheeseX;
+        let dy = y - cheeseY;
+        let distance = Math.round(Math.sqrt((dx * dx) + (dy * dy)));
+        button.textContent = distance;
+        button.className = "downButton";
+      }
+    }
+  </script>
+</body>
+
+</html>

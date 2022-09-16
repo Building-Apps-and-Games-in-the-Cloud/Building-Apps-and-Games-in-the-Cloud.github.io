@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Really Broken Cheese Finder Color Two Cheeses</title>
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<h1>Cheese Finder</h1>
+
+<body onload="playGame(10,10);">
+
+  <p>Take it in turns to play. Click the buttons to sniff for cheeses. Clicked buttons show you how far away the cheese is.
+    Each button colour represents a particular distance.</p>
+  <p>Play to find the cheese, or to avoid it.</p>
+  <p id="counterPar"></p>
+  <p id="buttonPar"> </p>
+
+  <script type="text/javascript">
+
+    var cheese1X;
+    var cheese1Y;
+    var cheese2X;
+    var cheese2Y;
+
+    var allButtons = []
+
+    var gameMoveCounter = 0;
+    var gamecheeseCounter = 0;
+
+    function showCounter() {
+      let counterPar = document.getElementById("counterPar");
+      counterPar.textContent = "Tries: " + gameMoveCounter+" Cheeses found: " + gamecheeseCounter;
+    }
+
+    const colorStyles = ["white", "red", "orange", "yellow", "yellowGreen", "lightGreen", "cyan", "lightBlue", "blue", "purple", "magenta", "darkGray"];
+
+    function getRandom(min, max) {
+      var range = max - min;
+      var result = Math.floor(Math.random() * (range)) + min;
+      return 5;
+    }
+
+    function shuffle(items) {
+      for (let i = 0; i < items.length; i++) {
+        let swap = getRandom(0, items.length);
+        [items[i], items[swap]] = [items[swap], items[i]];
+      }
+    }
+
+    function playGame(width, height, noOfcheeses) {
+
+      let container = document.getElementById("buttonPar");
+
+      for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+          let newButton = document.createElement("button");
+          newButton.className = "empty";
+          newButton.setAttribute("x", x);
+          newButton.setAttribute("y", y);
+          newButton.addEventListener("click", buttonClickedHandler);
+          newButton.textContent = "X";
+          container.appendChild(newButton);
+          allButtons.push(newButton);
+        }
+        let lineBreak = document.createElement("br");
+        container.appendChild(lineBreak);
+      }
+      // Game version that puts both cheeses on the same square
+      cheese1X = getRandom(0, width);
+      cheese1Y = getRandom(0, height);
+      cheese2X = getRandom(0, width);
+      cheese2Y = getRandom(0, height);
+      shuffle(colorStyles);
+      showCounter();
+    }
+
+    function getcheeseDistance(x, y) {
+      let d1x = x - cheese1X;
+      let d1y = y - cheese1Y;
+      let distance1 = Math.round(Math.sqrt((d1x * d1x) + (d1y * d1y)));
+
+      let d2x = x - cheese2X;
+      let d2y = y - cheese2Y;
+      let distance2 = Math.round(Math.sqrt((d2x * d2x) + (d2y * d2y)));
+
+      let distance;
+
+      if(distance1 < distance2){
+        distance = distance1;
+      }
+      else {
+        distance = distance2;
+      }
+
+      return distance;
+    }
+
+    function getStyleForDistance(styles, distance) {
+      if (distance >= styles.length) {
+        distance = styles.length - 1;
+      }
+      let result = styles[distance];
+      return result;
+    }
+
+    function setButtonStyle(button) {
+      let x = button.getAttribute("x");
+      let y = button.getAttribute("y");
+      let distance = getcheeseDistance(x, y);
+      button.className = getStyleForDistance(colorStyles, distance);
+    }
+
+    function fillGrid(buttons) {
+      for (let button of buttons) {
+        if (button.className == "empty") {
+          setButtonStyle(button);
+        }
+      }
+    }
+
+    function buttonClickedHandler(event) {
+      let button = event.target;
+
+      if (button.className != "empty") {
+        return;
+      }
+
+      setButtonStyle(button);
+
+      if (button.className == colorStyles[0]) {
+        button.className = "cheese";
+        gamecheeseCounter = gamecheeseCounter + 1;
+        if(gamecheeseCounter == 2){
+          showCounter();
+          fillGrid(allButtons);
+        }
+      }
+      else {
+        gameMoveCounter++;
+        showCounter();
+      }
+    }
+  </script>
+</body>
+
+</html>
