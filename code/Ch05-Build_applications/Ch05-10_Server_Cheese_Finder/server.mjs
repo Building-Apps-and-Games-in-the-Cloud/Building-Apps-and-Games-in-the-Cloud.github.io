@@ -2,69 +2,58 @@ import http from 'http';
 import fs from 'fs';
 import path from 'path';
 import url from 'url';
-import { json } from 'stream/consumers';
 
-const basePath = "./code/Ch05-Build_applications/Ch05-09_Server_Cheese_Finder/";
+const basePath = "./code/Ch05-Build_applications/Ch05-10_Server_Cheese_Finder/";
 
-class Mine {
-    constructor(x,y) {
-        this.x = x;
-        this.y = y;
-    }
+var gridWidth=10;
+var gridHeight=10;
+const colorStyles = ["white", "red", "orange", "yellow", "yellowGreen", "lightGreen", "cyan", "lightBlue", "blue", "purple", "magenta", "darkGray"];
 
-    getDistance(x, y) {
-        let dx = x - this.x;
-        let dy = y - this.y;
-        let distance = Math.round(Math.sqrt((dx * dx) + (dy * dy)));
-        return distance;
-    }
+const cheeses = [
+    {x:0,y:0},
+    {x:1,y:1},
+    {x:2,y:2}
+];
+
+function getDistance(cheese,x, y) {
+    let dx = x - cheese.x;
+    let dy = y - cheese.y;
+    let distance = Math.round(Math.sqrt((dx * dx) + (dy * dy)));
+    return distance;
 }
 
-class MineFinderGrid {
-
-    constructor(width, height, mines, distanceStyles) {
-        this.width = width;
-        this.height = height;
-        this.mines = mines;
-        this.distanceStyles = distanceStyles;
-    }
-
-    getDistToNearest(x, y) {
-        let result ;
-        for (let mine of this.mines) {
-            let distance = mine.getDistance(x, y);
-            if (result == undefined ){
-                result = distance;
-            }
-            if( distance < result) {
-                result = distance;
-            }
+function getDistToNearestCheese(x, y) {
+    let result ;
+    for (let cheese of cheeses) {
+        let distance = getDistance(cheese,x, y);
+        if (result == undefined ){
+            result = distance;
         }
-        return result;
+        if( distance < result) {
+            result = distance;
+        }
     }
-
-    getMineStyle(x,y){
-        let distance = this.getDistToNearest(x,y);
-        if (distance >= this.distanceStyles.length) {
-            distance = this.distanceStyles.length - 1;
-          }
-        return this.distanceStyles[distance];
-    }
+    return result;
 }
 
+function getStyle(x,y){
+    
+    let distance = getDistToNearestCheese(x,y);
 
-/**
- * Serves back the index page for the game
- * the index page is held in the file index.html
- * 
- * @param {Request from server} request 
- * @param {Respnse to populate} response 
- */
+    if(distance == 0){
+        return "cheese";
+    }
+    
+    if (distance >= colorStyles.length) {
+        distance = colorStyles.length - 1;
+      }
+    return colorStyles[distance];
+}
+
 function handlePageRequest(request, response) {
 
     console.log("Page request for:" + request.url);
 
-    let localurl = request.url;
     let filePath = basePath + request.url;
 
     let fileTypeDecode = {
@@ -105,22 +94,25 @@ function handlePageRequest(request, response) {
         var parsedUrl = url.parse(request.url, true);
         var queries = parsedUrl.query;
         var localPath = parsedUrl.pathname;
+        let json;
         console.log("    local path:" + localPath);
         switch (localPath) {
-            case '/getStart.json':
+            case '/getstart.json':
                 response.statusCode = 200;
-                response.setHeader('Content-Type', 'text/plain');
-                response.write("hello from the other side...");
+                response.setHeader('Content-Type', 'text/json');
+                let answer = { width:gridWidth,height:gridHeight, noOfCheeses:cheeses.length};
+                json = JSON.stringify(answer);
+                response.write(json);
                 response.end();
                 break;
 
-            case '/checkMine.json':
+            case '/getstyle.json':
                 let x = Number(queries.x);
                 let y = Number(queries.y);
                 response.statusCode = 200;
                 response.setHeader('Content-Type', 'text/json');
                 console.log("Got: (" + x + "," + y + ")");
-                response.write(mineGrid.getMineStyle(x,y));
+                response.write(getStyle(x,y));
                 response.end();
                 break;
             default:
@@ -132,12 +124,6 @@ function handlePageRequest(request, response) {
         }
     }
 }
-
-let mineGrid = new MineFinderGrid(10,10,
-    [ new Mine(0,0), new Mine(1,1), new Mine(2,2)],
-    ["exploded", "dist1", "dist2", "dist3", "dist4", 
-    "dist5", "dist6", "dist7", "dist8", "dist9", "dist10", "distFar"]
-    );
 
 let server = http.createServer(handlePageRequest);
 

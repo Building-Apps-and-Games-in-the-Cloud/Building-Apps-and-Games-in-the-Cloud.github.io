@@ -6,7 +6,7 @@
   <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
   <link rel="stylesheet" href="styles.css">
 </head>
-<h1>  &#129472;  Cheese Finder</h1>
+<h1> &#129472; Cheese Finder</h1>
 
 <body onload="playGame(10,10);">
 
@@ -32,7 +32,7 @@
       let counterPar = document.getElementById("counterPar");
       counterPar.textContent = "Tries: " + counter;
     }
-    
+
     const colorStyles = ["white", "red", "orange", "yellow", "yellowGreen", "lightGreen", "cyan", "lightBlue", "blue", "purple", "magenta", "darkGray"];
 
     function getRandom(min, max) {
@@ -90,8 +90,15 @@
     function setButtonStyle(button) {
       let x = button.getAttribute("x");
       let y = button.getAttribute("y");
+
       let distance = getCheeseDistance(x, y);
-      button.className = getStyleForDistance(colorStyles, distance);
+
+      if (distance == 0) {
+        button.className = "cheese";
+      }
+      else {
+        button.className = getStyleForDistance(colorStyles, distance);
+      }
     }
 
     function fillGrid(buttons) {
@@ -111,8 +118,7 @@
 
       setButtonStyle(button);
 
-      if (button.className == colorStyles[0]) {
-        button.className = "cheese";
+      if (button.className == "cheese") {
         fillGrid(allButtons);
       }
       else {

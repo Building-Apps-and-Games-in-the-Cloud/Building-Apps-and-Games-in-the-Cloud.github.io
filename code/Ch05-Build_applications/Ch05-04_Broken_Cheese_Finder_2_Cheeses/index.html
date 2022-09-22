@@ -6,11 +6,12 @@
   <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
   <link rel="stylesheet" href="styles.css">
 </head>
-<h1>Cheese Finder</h1>
+<h1>&#129472; Cheese Finder</h1>
 
 <body onload="playGame(10,10);">
 
-  <p>Take it in turns to play. Click the buttons to sniff for cheeses. Clicked buttons show you how far away the cheese is.
+  <p>Take it in turns to play. Click the buttons to sniff for cheeses. Clicked buttons show you how far away the cheese
+    is.
     Each button colour represents a particular distance.</p>
   <p>Play to find the cheese, or to avoid it.</p>
   <p id="counterPar"></p>
@@ -30,7 +31,7 @@
 
     function showCounter() {
       let counterPar = document.getElementById("counterPar");
-      counterPar.textContent = "Tries: " + gameMoveCounter+" Cheeses found: " + gamecheeseCounter;
+      counterPar.textContent = "Tries: " + gameMoveCounter + " Cheeses found: " + gamecheeseCounter;
     }
 
     const colorStyles = ["white", "red", "orange", "yellow", "yellowGreen", "lightGreen", "cyan", "lightBlue", "blue", "purple", "magenta", "darkGray"];
@@ -85,7 +86,7 @@
 
       let distance;
 
-      if(distance1 < distance2){
+      if (distance1 < distance2) {
         distance = distance1;
       }
       else {
@@ -107,7 +108,12 @@
       let x = button.getAttribute("x");
       let y = button.getAttribute("y");
       let distance = getcheeseDistance(x, y);
-      button.className = getStyleForDistance(colorStyles, distance);
+      if (distance == 0) {
+        button.className = "cheese";
+      }
+      else {
+        button.className = getStyleForDistance(colorStyles, distance);
+      }
     }
 
     function fillGrid(buttons) {
@@ -127,10 +133,9 @@
 
       setButtonStyle(button);
 
-      if (button.className == colorStyles[0]) {
-        button.className = "cheese";
+      if (button.className == "cheese"){
         gamecheeseCounter = gamecheeseCounter + 1;
-        if(gamecheeseCounter == 2){
+        if (gamecheeseCounter == 2) {
           showCounter();
           fillGrid(allButtons);
         }

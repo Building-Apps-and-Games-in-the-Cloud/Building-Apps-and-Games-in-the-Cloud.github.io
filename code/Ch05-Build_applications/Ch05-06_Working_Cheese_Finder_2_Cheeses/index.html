@@ -6,7 +6,7 @@
   <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
   <link rel="stylesheet" href="styles.css">
 </head>
-<h1>Cheese Finder</h1>
+<h1>&#129472; Cheese Finder</h1>
 
 <body onload="playGame(10,10);">
 
@@ -113,8 +113,14 @@
       let x = button.getAttribute("x");
       let y = button.getAttribute("y");
       let distance = getcheeseDistance(x, y);
-      button.className = getStyleForDistance(colorStyles, distance);
+      if (distance == 0) {
+        button.className = "cheese";
+      }
+      else {
+        button.className = getStyleForDistance(colorStyles, distance);
+      }
     }
+
 
     function fillGrid(buttons) {
       for (let button of buttons) {
@@ -132,9 +138,7 @@
       }
 
       setButtonStyle(button);
-
-      if (button.className == colorStyles[0]) {
-        button.className = "cheese";
+      if (button.className == "cheese"){
         gamecheeseCounter = gamecheeseCounter + 1;
         if (gamecheeseCounter == 2) {
           showCounter();

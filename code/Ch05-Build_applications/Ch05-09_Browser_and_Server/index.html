@@ -2,24 +2,22 @@
 <html>
 
 <head>
-  <title>Server Cheese Finder</title>
+  <title>Browser and Server</title>
   <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
   <link rel="stylesheet" href="styles.css">
 </head>
-<h1>Server Cheese Finder</h1>
+<h1>&#129472; Browser and Server</h1>
 
 <body>
 
-  <p>Take it in turns to play. Click the buttons to sniff for cheeses. Clicked buttons show you how far away the cheese
-    is.
-    Each button colour represents a particular distance.</p>
+  <p>Demo application that starts the game. </p>
   <p>Play to find the cheese, or to avoid it.</p>
   <p id="counterPar"></p>
   <p id="buttonPar"> </p>
 
   <script type="module">
     import { doPlayGame } from "./client.mjs";
-    doPlayGame(10,10,3);
+    doPlayGame();
 
   </script>
 </body>
