@@ -5,17 +5,17 @@ import url from 'url';
 
 const basePath = "./code/Ch05-Build_applications/Ch05-10_Server_Cheese_Finder/";
 
-var gridWidth=10;
-var gridHeight=10;
+var gridWidth = 10;
+var gridHeight = 10;
 const colorStyles = ["white", "red", "orange", "yellow", "yellowGreen", "lightGreen", "cyan", "lightBlue", "blue", "purple", "magenta", "darkGray"];
 
 const cheeses = [
-    {x:0,y:0},
-    {x:1,y:1},
-    {x:2,y:2}
+    { x: 0, y: 0 },
+    { x: 1, y: 1 },
+    { x: 2, y: 2 }
 ];
 
-function getDistance(cheese,x, y) {
+function getDistance(cheese, x, y) {
     let dx = x - cheese.x;
     let dy = y - cheese.y;
     let distance = Math.round(Math.sqrt((dx * dx) + (dy * dy)));
@@ -23,30 +23,30 @@ function getDistance(cheese,x, y) {
 }
 
 function getDistToNearestCheese(x, y) {
-    let result ;
+    let result;
     for (let cheese of cheeses) {
-        let distance = getDistance(cheese,x, y);
-        if (result == undefined ){
+        let distance = getDistance(cheese, x, y);
+        if (result == undefined) {
             result = distance;
         }
-        if( distance < result) {
+        if (distance < result) {
             result = distance;
         }
     }
     return result;
 }
 
-function getStyle(x,y){
-    
-    let distance = getDistToNearestCheese(x,y);
+function getStyle(x, y) {
 
-    if(distance == 0){
+    let distance = getDistToNearestCheese(x, y);
+
+    if (distance == 0) {
         return "cheese";
     }
-    
+
     if (distance >= colorStyles.length) {
         distance = colorStyles.length - 1;
-      }
+    }
     return colorStyles[distance];
 }
 
@@ -92,27 +92,28 @@ function handlePageRequest(request, response) {
     else {
         // If it is not a file it might be a command
         var parsedUrl = url.parse(request.url, true);
-        var queries = parsedUrl.query;
-        var localPath = parsedUrl.pathname;
         let json;
-        console.log("    local path:" + localPath);
-        switch (localPath) {
+        console.log("    local path:" + parsedUrl.pathname);
+        switch (parsedUrl.pathname) {
             case '/getstart.json':
                 response.statusCode = 200;
                 response.setHeader('Content-Type', 'text/json');
-                let answer = { width:gridWidth,height:gridHeight, noOfCheeses:cheeses.length};
+                let answer = { width: gridWidth, height: gridHeight, noOfCheeses: cheeses.length };
                 json = JSON.stringify(answer);
                 response.write(json);
                 response.end();
                 break;
 
             case '/getstyle.json':
-                let x = Number(queries.x);
-                let y = Number(queries.y);
+                let x = Number(parsedUrl.query.x);
+                let y = Number(parsedUrl.query.y);
                 response.statusCode = 200;
                 response.setHeader('Content-Type', 'text/json');
                 console.log("Got: (" + x + "," + y + ")");
-                response.write(getStyle(x,y));
+                let styleText = getStyle(x, y);
+                let styleObject = { style: styleText };
+                let styleJSON = JSON.stringify(styleObject);
+                response.write(styleJSON);
                 response.end();
                 break;
             default:

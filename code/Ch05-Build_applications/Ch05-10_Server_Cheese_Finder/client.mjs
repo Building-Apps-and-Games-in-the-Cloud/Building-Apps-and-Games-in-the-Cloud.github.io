@@ -36,11 +36,13 @@ function setButtonStyle(button) {
   let y = button.getAttribute("y");
   let checkUrl = getStyleUrl + "?x=" + x + "&y=" + y;
   getFromServer(checkUrl, result => {
-    button.className = result
+    let checkDetails = JSON.parse(result);
+    button.className = checkDetails.style;
     if (button.className == "cheese") {
       cheesesFound++;
       if (cheesesFound == noOfCheeses) {
         fillGrid(allButtons);
+        showCounters();
       }
     }
   });
