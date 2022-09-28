@@ -1,0 +1,46 @@
+.menuHeading,.fiveNameHeading{
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  color: black;
+}
+
+.menuHeading {
+  font-size: xx-large;
+}
+.fiveNameHeading{
+  font-size: xx-large;
+}
+
+.inputLabel,.inputText, .inputTextarea, .menuButton,.bodyText,.outputText
+{
+  font-family:Arial, Helvetica, sans-serif;
+  color:black;
+}
+
+.inputLabel,.inputText, .inputTextarea
+{
+  text-align: center;
+  font-size: large;
+}
+
+.outputText{
+  font-size: large;
+}
+
+.menuButton
+{
+  font-size: large;
+  text-align: center;
+}
+
+.inputLabel
+{
+  display:inline-block;
+  vertical-align: top;
+  width:6em;
+}
+
+.inputPanel
+{
+  text-align: center;
+}
+
