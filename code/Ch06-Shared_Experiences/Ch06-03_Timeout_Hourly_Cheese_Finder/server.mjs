@@ -108,6 +108,14 @@ function getStyle(x, y) {
     return gameSetup.colorStyles[distance];
 }
 
+function setGameSetup(){
+    let date = new Date();
+
+    let hour = date.getHours() % 12;
+
+    gameSetup = gameSetups[hour];
+}
+
 function handlePageRequest(request, response) {
     console.log("Page request for:" + request.url);
 
@@ -148,12 +156,8 @@ function handlePageRequest(request, response) {
     }
     else {
         // If it is not a file it might be a command
-
-        // Get the game setup for this hour
-        let date = new Date();
-        let hour = date.getHours() % 12;
-        gameSetup = gameSetups[hour];
-
+        // Get the game setup
+        setGameSetup();
         var parsedUrl = url.parse(request.url, true);
         let json;
         console.log("    local path:" + parsedUrl.pathname);
