@@ -96,7 +96,7 @@ function getDistToNearestCheese(x, y) {
 }
 
 function getStyle(x, y) {
-    let distance = getDistToNearestCheese( x, y);
+    let distance = getDistToNearestCheese(x, y);
 
     if (distance == 0) {
         return "cheese";
@@ -110,11 +110,11 @@ function getStyle(x, y) {
 
 function handlePageRequest(request, response) {
 
-let date = new Date();
+    let date = new Date();
 
-let hour = date.getHours() % 12;
+    let hour = date.getHours() % 12;
 
-gameSetup = gameSetups[hour];
+    gameSetup = gameSetups[hour];
 
     console.log("Page request for:" + request.url);
 
