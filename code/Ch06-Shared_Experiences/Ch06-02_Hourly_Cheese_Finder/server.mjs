@@ -72,6 +72,8 @@ const gameSetups = [
     }
 ];
 
+let gameSetup;
+
 function getDistance(cheese, x, y) {
     let dx = x - cheese.x;
     let dy = y - cheese.y;
@@ -106,14 +108,12 @@ function getStyle(x, y) {
     return gameSetup.colorStyles[distance];
 }
 
-function getGameSetup() {
+function setGameSetup(){
     let date = new Date();
 
     let hour = date.getHours() % 12;
 
-    let gameSetup = gameSetups[hour];
-
-    return gameSetup;
+    gameSetup = gameSetups[hour];
 }
 
 function handlePageRequest(request, response) {
@@ -157,7 +157,7 @@ function handlePageRequest(request, response) {
     else {
         // If it is not a file it might be a command
         // Get the game setup
-        let gameSetup = getGameSetup();
+        setGameSetup();
         var parsedUrl = url.parse(request.url, true);
         let json;
         console.log("    local path:" + parsedUrl.pathname);
