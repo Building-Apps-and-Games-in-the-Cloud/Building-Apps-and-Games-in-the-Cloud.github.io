@@ -159,7 +159,7 @@ function handlePageRequest(request, response) {
         console.log("    local path:" + parsedUrl.pathname);
         switch (parsedUrl.pathname) {
             case '/getstart.json':
-                response.statusCode = 200;
+                response.statusCode = 200;  
                 response.setHeader('Content-Type', 'text/json');
                 let answer = { width: gridWidth, height: gridHeight, noOfCheeses: gameSetup.cheeses.length };
                 json = JSON.stringify(answer);

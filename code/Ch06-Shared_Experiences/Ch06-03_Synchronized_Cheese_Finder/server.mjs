@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import url from 'url';
 
-const basePath = "./code/Ch06-Shared_Experiences/Ch06-02_Hourly_Cheese_Finder/";
+ const basePath = "./code/Ch06-Shared_Experiences/Ch06-03_Timeout_Hourly_Cheese_Finder/";
 
 var gridWidth = 10;
 var gridHeight = 10;
@@ -108,14 +108,6 @@ function getStyle(x, y) {
     return gameSetup.colorStyles[distance];
 }
 
-function setGameSetup(){
-    let date = new Date();
-
-    let hour = date.getHours() % 12;
-
-    gameSetup = gameSetups[hour];
-}
-
 function handlePageRequest(request, response) {
     console.log("Page request for:" + request.url);
 
@@ -156,8 +148,12 @@ function handlePageRequest(request, response) {
     }
     else {
         // If it is not a file it might be a command
-        // Get the game setup
-        setGameSetup();
+
+        // Get the game setup for this hour
+        let date = new Date();
+        let hour = date.getHours() % 12;
+        gameSetup = gameSetups[hour];
+
         var parsedUrl = url.parse(request.url, true);
         let json;
         console.log("    local path:" + parsedUrl.pathname);
@@ -165,7 +161,7 @@ function handlePageRequest(request, response) {
             case '/getstart.json':
                 response.statusCode = 200;
                 response.setHeader('Content-Type', 'text/json');
-                let answer = { width: gridWidth, height: gridHeight, noOfCheeses: gameSetup.cheeses.length };
+                let answer = { width: gridWidth, height: gridHeight, noOfCheeses: gameSetup.cheeses.length, hour: hour };
                 json = JSON.stringify(answer);
                 response.write(json);
                 response.end();
@@ -178,7 +174,7 @@ function handlePageRequest(request, response) {
                 response.setHeader('Content-Type', 'text/json');
                 console.log("Got: (" + x + "," + y + ")");
                 let styleText = getStyle(x, y);
-                let styleObject = { style: styleText };
+                let styleObject = { style: styleText, hour: hour };
                 let styleJSON = JSON.stringify(styleObject);
                 response.write(styleJSON);
                 response.end();

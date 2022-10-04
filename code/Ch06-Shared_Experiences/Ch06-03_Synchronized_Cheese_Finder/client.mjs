@@ -3,6 +3,7 @@ var allButtons = []
 var moveCounter = 0;
 var cheesesFound;
 var noOfCheeses;
+var gameHour;
 
 let hostAddress = "http://localhost:8080/";
 
@@ -37,6 +38,12 @@ function setButtonStyle(button) {
   let checkUrl = getStyleUrl + "?x=" + x + "&y=" + y;
   getFromServer(checkUrl, result => {
     let checkDetails = JSON.parse(result);
+    if(checkDetails.hour != gameHour){
+      // we have reached the end of the hour
+      // end the game
+      alert("The game in this hour has ended.");
+      location.reload();
+    }
     button.className = checkDetails.style;
     if (button.className == "cheese") {
       cheesesFound++;
@@ -65,6 +72,7 @@ function setupGame(gameDetailsJSON) {
   let gameDetails = JSON.parse(gameDetailsJSON);
 
   noOfCheeses = gameDetails.noOfCheeses;
+  gameHour = gameDetails.hour;
 
   let container = document.getElementById("buttonPar");
 
