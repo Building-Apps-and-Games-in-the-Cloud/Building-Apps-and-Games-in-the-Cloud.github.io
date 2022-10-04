@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import url from 'url';
 
- const basePath = "./code/Ch06-Shared_Experiences/Ch06-03_Timeout_Hourly_Cheese_Finder/";
+ const basePath = "./code/Ch06-Shared_Experiences/Ch06-03_Synchronized_Cheese_Finder/";
 
 var gridWidth = 10;
 var gridHeight = 10;
