@@ -42,8 +42,8 @@ function setButtonStyle(button) {
       cheesesFound++;
       if (cheesesFound == noOfCheeses) {
         fillGrid(allButtons);
-        showCounters();
       }
+      showCounters();
     }
   });
 }

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Pseudo Random Dice</title>
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body onload="doStartDice();">
+  <p id="dicePar" class="dice">0</p>
+
+  <p>
+    <button onclick="doRoll();">Roll Dice</button>
+  </p>
+
+  <script type="text/javascript">
+
+    function showMessage(message) {
+      let outputElement = document.getElementById("dicePar");
+      outputElement.textContent = message;
+    }
+
+    let randValue;
+    let randMult;
+    let randAdd;
+    let randModulus;
+
+    function startRand() {
+      randValue = 1234;
+      randMult = 8121;
+      randAdd = 28413;
+      randModulus = 134456789;
+    }
+
+    function pseudoRand() {
+      randValue = ((randMult * randValue) + randAdd) % randModulus;
+      return randValue / randModulus;
+    }
+
+    let randFunction = pseudoRand;
+
+    function getRandom(min, max) {
+      var range = max - min;
+      var result = Math.floor(randFunction() * (range)) + min;
+      return result;
+    }
+
+    function getDiceThrowString() {
+      let throwValue = getRandom(1, 7);
+      let throwString = String(throwValue);
+      return throwString;
+    }
+
+    function doRoll() {
+      let diceThrow = getDiceThrowString();
+      showMessage(diceThrow);
+    }
+
+    function testDice(testFunction, noOfTests) {
+      randFunction = testFunction;
+      let totals = [0, 0, 0, 0, 0, 0];
+      for (let i = 0; i < noOfTests; i++) {
+        let roll = getRandom(1, 7);
+        totals[roll - 1]++;
+      }
+      let fractions = totals.map((v) => v / noOfTests);
+      console.log(fractions);
+    }
+
+    function getRepeatLoopSize() {
+      startRand();
+      let firstValue = randValue;
+      let counter = 1;
+      while (true) {
+        pseudoRand();
+        if (randValue == firstValue) {
+          break;
+        }
+        counter = counter + 1;
+      }
+      console.log("Loop size: " + String(counter));
+    }
+
+    function doStartDice() {
+      startRand();
+      doRoll();
+    }
+
+  </script>
+</body>
+
+</html>
