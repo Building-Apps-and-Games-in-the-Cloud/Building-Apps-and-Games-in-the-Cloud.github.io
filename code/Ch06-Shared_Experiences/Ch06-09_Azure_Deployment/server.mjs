@@ -11,7 +11,7 @@ import path from 'path';
 import url from 'url';
 import { setupRand, getRandom, shuffle } from "./pseudorandom.mjs";
 
-const basePath = "./code/Ch06-Shared_Experiences/Ch06-08_Optimized_Cheese_Finder/";
+const basePath = "./";
 
 var gridWidth = 10;
 var gridHeight = 10;
