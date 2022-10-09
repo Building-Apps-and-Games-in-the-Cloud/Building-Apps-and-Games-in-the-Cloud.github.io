@@ -2,49 +2,20 @@ import http from 'http';
 import fs from 'fs';
 import path from 'path';
 import url from 'url';
+import {setupRand,getRandom, shuffle} from "./pseudorandom.mjs";
 
-const basePath = "./code/Ch06-Shared_Experiences/Ch06-06_World_Synchronized_Cheese_Finder/";
+const basePath = "./code/Ch06-Shared_Experiences/Ch06-06_Time_Synchronized_Cheese_Finder/";
 
 var gridWidth = 10;
 var gridHeight = 10;
 
-let randValue;
-let randMult;
-let randAdd;
-let randModulus;
-
-function setupRand(startValue) {
-    randValue = startValue;
-    randMult = 8121;
-    randAdd = 28413;
-    randModulus = 134456789;
-}
 
 function getAbsoluteHour(date){
-    let result = (date.getUTCFullYear() * 365 * 24) +
-        (date.getUTCMonth() * 31 * 24) +
-        (date.getUTCDate() * 24) +
-        date.getUTCHours();
+    let result = (date.getFullYear() * 365 * 24) +
+        (date.getMonth() * 31 * 24) +
+        (date.getDate() * 24) +
+        date.getHours();
     return result;
-}
-
-
-function pseudoRand() {
-    randValue = ((randMult * randValue) + randAdd) % randModulus;
-    return randValue / randModulus;
-}
-
-function getRandom(min, max) {
-    var range = max - min;
-    var result = Math.floor(pseudoRand() * range) + min;
-    return result;
-}
-
-function shuffle(items) {
-    for (let i = 0; i < items.length; i++) {
-        let swap = getRandom(0, items.length);
-        [items[i], items[swap]] = [items[swap], items[i]];
-    }
 }
 
 function getDistance(cheese, x, y) {
@@ -91,8 +62,8 @@ function setupGame() {
     shuffle(colorStyles);
     cheeseList = [];
     // build the grid
-    for (let y = 0; y < gridHeight; y++) {
-        for (let x = 0; x < gridWidth; x++) {
+    for (let x = 0; x < gridWidth; x++) {
+        for (let y = 0; y < gridHeight; y++) {
             let square = { x: x, y: y };
             cheeseList.push(square);
         }
@@ -149,7 +120,13 @@ function handlePageRequest(request, response) {
         let absoluteHour = getAbsoluteHour(date);
 
         // Use the absolute hour to setup the random number generator
-        setupRand(absoluteHour);
+        let randSetup = {
+            startValue:absoluteHour,
+            randMult:8121,
+            randAdd:28413,
+            randModulus:134456789
+        }
+        setupRand(randSetup);
 
         // Set up the game grid
         setupGame();

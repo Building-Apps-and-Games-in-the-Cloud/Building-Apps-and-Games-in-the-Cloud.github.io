@@ -2,24 +2,14 @@ import http from 'http';
 import fs from 'fs';
 import path from 'path';
 import url from 'url';
+import { setupRand, getRandom, shuffle } from "./pseudorandom.mjs";
 
-const basePath = "./code/Ch06-Shared_Experiences/Ch06-07_Faster_Cheese_Finder/";
+const basePath = "./code/Ch06-Shared_Experiences/Ch06-08_Optimized_Cheese_Finder/";
 
 var gridWidth = 10;
 var gridHeight = 10;
-
-let randValue;
-let randMult;
-let randAdd;
-let randModulus;
 let absoluteHour = 0;
-
-function setupRand(startValue) {
-    randValue = startValue;
-    randMult = 8121;
-    randAdd = 28413;
-    randModulus = 134456789;
-}
+let game;
 
 function getAbsoluteHour(date) {
     let result = (date.getUTCFullYear() * 365 * 24) +
@@ -29,88 +19,87 @@ function getAbsoluteHour(date) {
     return result;
 }
 
+function getGame(req) {
 
-function pseudoRand() {
-    randValue = ((randMult * randValue) + randAdd) % randModulus;
-    return randValue / randModulus;
-}
-
-function getRandom(min, max) {
-    var range = max - min;
-    var result = Math.floor(pseudoRand() * range) + min;
-    return result;
-}
-
-function shuffle(items) {
-    for (let i = 0; i < items.length; i++) {
-        let swap = getRandom(0, items.length);
-        [items[i], items[swap]] = [items[swap], items[i]];
+    function getDistance(cheese, x, y) {
+        let dx = x - cheese.x;
+        let dy = y - cheese.y;
+        let distance = Math.round(Math.sqrt((dx * dx) + (dy * dy)));
+        return distance;
     }
-}
 
-function getDistance(cheese, x, y) {
-    let dx = x - cheese.x;
-    let dy = y - cheese.y;
-    let distance = Math.round(Math.sqrt((dx * dx) + (dy * dy)));
-    return distance;
-}
-
-function getDistToNearestCheese(x, y) {
-    let result;
-    for (let cheeseNo = 0; cheeseNo < noOfCheeses; cheeseNo++) {
-        let distance = getDistance(cheeseList[cheeseNo], x, y);
-        if (result == undefined) {
-            result = distance;
+    function getDistToNearestCheese(x, y) {
+        let result;
+        for (let cheeseNo = 0; cheeseNo < noOfCheeses; cheeseNo++) {
+            let distance = getDistance(cheeseList[cheeseNo], x, y);
+            if (result == undefined) {
+                result = distance;
+            }
+            if (distance < result) {
+                result = distance;
+            }
         }
-        if (distance < result) {
-            result = distance;
+        return result;
+    }
+
+    function getStyle(x, y) {
+        let distance = getDistToNearestCheese(x, y);
+
+        if (distance == 0) {
+            return "cheese";
         }
-    }
-    return result;
-}
 
-function getStyle(x, y) {
-    let distance = getDistToNearestCheese(x, y);
-
-    if (distance == 0) {
-        return "cheese";
+        if (distance >= req.colorStyles.length) {
+            distance = req.colorStyles.length - 1;
+        }
+        return req.colorStyles[distance];
     }
 
-    if (distance >= colorStyles.length) {
-        distance = colorStyles.length - 1;
+    let noOfCheeses;
+
+    let randSetup = {
+        startValue: req.startValue,
+        randMult: req.randMult,
+        randAdd: req.randAdd,
+        randModulus: req.randModulus
     }
-    return colorStyles[distance];
-}
 
-let colorStyles;
-let cheeseList;
-let noOfCheeses;
-let grid = []
+    setupRand(randSetup);
 
-function setupGame() {
-    // set up the initial positions for the game elements
-    colorStyles = ["white", "red", "orange", "yellow", "yellowGreen", "lightGreen", "cyan", "lightBlue", "blue", "purple", "magenta", "darkGray"];
-    shuffle(colorStyles);
-    cheeseList = [];
+    shuffle(req.colorStyles);
+
     // build the grid and cheese list
-    for (let y = 0; y < gridHeight; y++) {
+    let grid = []
+    let cheeseList = [];
+    for (let x = 0; x < req.width; x++) {
         let column = [];
-        for (let x = 0; x < gridWidth; x++) {
-            let square = { x: x, y: y,style:"empty" };
+        for (let y = 0; y < req.height; y++) {
+            let square = { x: x, y: y, style: "empty" };
+            // put the square into the cheese list
             cheeseList.push(square);
+            // put the square into the column
             column.push(square);
         }
+        // put the column into the grid
         grid.push(column);
     }
     shuffle(cheeseList);
-    noOfCheeses = getRandom(2, 6);
+    noOfCheeses = getRandom(req.minCheeses, req.maxCheeses);
     // set the styles for these cheese positions
-    for (let y = 0; y < gridHeight; y++) {
-        for (let x = 0; x < gridWidth; x++) {
-            grid[x][y].style = getStyle(x,y);
+    for (let x = 0; x < req.width; x++) {
+        for (let y = 0; y < req.height; y++) {
+            grid[x][y].style = getStyle(x, y);
         }
     }
+
+    let result = {
+        grid: grid,
+        noOfCheeses: noOfCheeses
+    }
+
+    return result;
 }
+
 
 function handlePageRequest(request, response) {
     console.log("Page request for:" + request.url);
@@ -157,18 +146,31 @@ function handlePageRequest(request, response) {
         let date = new Date();
 
         // get the absolute hour for this date
-        let newabsoluteHour = getAbsoluteHour(date);
+        let newAbsoluteHour = getAbsoluteHour(date);
 
-        if (newabsoluteHour != absoluteHour) {
-
-            // Use the new absolute hour to setup the random number generator
-            setupRand(newabsoluteHour);
+        if (newAbsoluteHour != absoluteHour) {
 
             // Set up the game grid
-            setupGame();
+
+            // this is what we want
+            let gameRequest = {
+                width: gridWidth,
+                height: gridHeight,
+                colorStyles: ["white", "red", "orange", "yellow", "yellowGreen", "lightGreen", "cyan",
+                    "lightBlue", "blue", "purple", "magenta", "darkGray"],
+                minCheeses: 1,
+                maxCheeses: 6,
+                startValue: newAbsoluteHour,
+                randMult: 8121,
+                randAdd: 28413,
+                randModulus: 134456789
+            }
+
+            // this gets the game description
+            game = getGame(gameRequest);
 
             // update the absoluteHour value
-            absoluteHour = newabsoluteHour;
+            absoluteHour = newAbsoluteHour;
         }
 
         var parsedUrl = url.parse(request.url, true);
@@ -178,7 +180,7 @@ function handlePageRequest(request, response) {
             case '/getstart.json':
                 response.statusCode = 200;
                 response.setHeader('Content-Type', 'text/json');
-                let answer = { width: gridWidth, height: gridHeight, noOfCheeses: noOfCheeses, hour: absoluteHour };
+                let answer = { width: gridWidth, height: gridHeight, noOfCheeses: game.noOfCheeses, hour: absoluteHour };
                 json = JSON.stringify(answer);
                 response.write(json);
                 response.end();
@@ -190,7 +192,7 @@ function handlePageRequest(request, response) {
                 response.statusCode = 200;
                 response.setHeader('Content-Type', 'text/json');
                 console.log("Got: (" + x + "," + y + ")");
-                let styleText = grid[x][y].style;
+                let styleText = game.grid[x][y].style;
                 let styleObject = { style: styleText, hour: absoluteHour };
                 let styleJSON = JSON.stringify(styleObject);
                 response.write(styleJSON);

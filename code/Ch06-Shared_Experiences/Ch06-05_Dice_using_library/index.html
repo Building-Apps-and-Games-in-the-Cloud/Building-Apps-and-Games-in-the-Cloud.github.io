@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Dice using library</title>
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body onload="doStartDice();">
+  <p id="dicePar" class="dice">0</p>
+
+  <p>
+    <button id="diceButton">Roll Dice</button>
+  </p>
+
+  <script type="module">
+    import { doStartDice } from "./pagecode.mjs";
+    doStartDice();
+  </script>
+
+</body>
+</html>
