@@ -1,5 +1,5 @@
 // Cheese Finder server by Rob Miles October 2022
-// Version 1.0
+// Version 1.1
 // If you move the server to a different location you will
 // have to update the base path string to reflect the new location
 
@@ -9,14 +9,13 @@ import http from 'http';
 import fs from 'fs';
 import path from 'path';
 import url from 'url';
-import { setupRand, getRandom, shuffle } from "./pseudorandom.mjs";
+import { setupGame, grid, noOfCheeses } from './game.mjs';
 
 const basePath = "./";
 
 var gridWidth = 10;
 var gridHeight = 10;
 let absoluteHour = 0;
-let game;
 
 function getAbsoluteHour(date) {
     let result = (date.getUTCFullYear() * 365 * 24) +
@@ -26,89 +25,12 @@ function getAbsoluteHour(date) {
     return result;
 }
 
-function getGame(req) {
-
-    function getDistance(cheese, x, y) {
-        let dx = x - cheese.x;
-        let dy = y - cheese.y;
-        let distance = Math.round(Math.sqrt((dx * dx) + (dy * dy)));
-        return distance;
-    }
-
-    function getDistToNearestCheese(x, y) {
-        let result;
-        for (let cheeseNo = 0; cheeseNo < noOfCheeses; cheeseNo++) {
-            let distance = getDistance(cheeseList[cheeseNo], x, y);
-            if (result == undefined) {
-                result = distance;
-            }
-            if (distance < result) {
-                result = distance;
-            }
-        }
-        return result;
-    }
-
-    function getStyle(x, y) {
-        let distance = getDistToNearestCheese(x, y);
-
-        if (distance == 0) {
-            return "cheese";
-        }
-
-        if (distance >= req.colorStyles.length) {
-            distance = req.colorStyles.length - 1;
-        }
-        return req.colorStyles[distance];
-    }
-
-    let noOfCheeses;
-
-    let randSetup = {
-        startValue: req.startValue,
-        randMult: req.randMult,
-        randAdd: req.randAdd,
-        randModulus: req.randModulus
-    }
-
-    setupRand(randSetup);
-
-    shuffle(req.colorStyles);
-
-    // build the grid and cheese list
-    let grid = []
-    let cheeseList = [];
-    for (let x = 0; x < req.width; x++) {
-        let column = [];
-        for (let y = 0; y < req.height; y++) {
-            let square = { x: x, y: y, style: "empty" };
-            // put the square into the cheese list
-            cheeseList.push(square);
-            // put the square into the column
-            column.push(square);
-        }
-        // put the column into the grid
-        grid.push(column);
-    }
-    shuffle(cheeseList);
-    noOfCheeses = getRandom(req.minCheeses, req.maxCheeses);
-    // set the styles for these cheese positions
-    for (let x = 0; x < req.width; x++) {
-        for (let y = 0; y < req.height; y++) {
-            grid[x][y].style = getStyle(x, y);
-        }
-    }
-
-    let result = {
-        grid: grid,
-        noOfCheeses: noOfCheeses
-    }
-
-    return result;
-}
-
-
 function handlePageRequest(request, response) {
+
+    if(request.url == '/'){
+        request.url = '/index.html';
+    }
+
     console.log("Page request for:" + request.url);
 
     let filePath = basePath + request.url;
@@ -173,8 +95,8 @@ function handlePageRequest(request, response) {
                 randModulus: 134456789
             }
 
-            // this gets the game description
-            game = getGame(gameRequest);
+            // set up the game
+            setupGame(gameRequest);
 
             // update the absoluteHour value
             absoluteHour = newAbsoluteHour;
@@ -187,7 +109,7 @@ function handlePageRequest(request, response) {
             case '/getstart.json':
                 response.statusCode = 200;
                 response.setHeader('Content-Type', 'text/json');
-                let answer = { width: gridWidth, height: gridHeight, noOfCheeses: game.noOfCheeses, hour: absoluteHour };
+                let answer = { width: gridWidth, height: gridHeight, noOfCheeses: noOfCheeses, hour: absoluteHour };
                 json = JSON.stringify(answer);
                 response.write(json);
                 response.end();
@@ -199,7 +121,7 @@ function handlePageRequest(request, response) {
                 response.statusCode = 200;
                 response.setHeader('Content-Type', 'text/json');
                 console.log("Got: (" + x + "," + y + ")");
-                let styleText = game.grid[x][y].style;
+                let styleText = grid[x][y].style;
                 let styleObject = { style: styleText, hour: absoluteHour };
                 let styleJSON = JSON.stringify(styleObject);
                 response.write(styleJSON);
@@ -215,10 +137,11 @@ function handlePageRequest(request, response) {
     }
 }
 
-
 let server = http.createServer(handlePageRequest);
 
 console.log("Server running");
 
-server.listen(8080);
+const port = process.env.PORT || 8080
+
+server.listen(port);
 
