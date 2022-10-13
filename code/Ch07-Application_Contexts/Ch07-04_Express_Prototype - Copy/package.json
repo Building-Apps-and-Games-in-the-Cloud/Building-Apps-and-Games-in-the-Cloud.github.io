@@ -1,0 +1,16 @@
+{
+  "name": "best_of_five_express_prototype",
+  "version": "1.0.0",
+  "description": "Prototype pages in express for the Best of Five application",
+  "main": "index.mjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rob Miles",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "express-favicon": "^2.0.1"
+  }
+}

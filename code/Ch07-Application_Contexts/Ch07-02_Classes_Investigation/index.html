@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+</head>
+
+<body>
+
+  <h1>Make Something Happen : Classes Investigation</h1>
+  <p>In this excercise we will be creating and decoding some JSON strings.
+  </p>
+  <p>
+    To open Developer Tools in the browser press the F12 key. If your keyboard does not have that key, hold down the
+    CTRL and SHIFT keys and press J
+  </p>
+  <p>The console will appear on the right of the page. You may need to confirm that you want to open it. </p>
+  <p>You can find the steps to follow for the exercise in Chapter 6 of the book in the section &quot;Make Something
+    Happen - Investigate classes&quot;</p>
+
+  <script type="text/javascript">
+
+    class PersonDetails {
+
+      constructor(newName, newAddress) {
+        this.name = newName;
+        this.address = newAddress;
+        console.log("I just made a PersonDetails object:" + this.name +
+          " :" + this.address);
+      }
+
+    }
+
+
+    class ValidPersonDetails {
+
+      constructor(name, address) {
+        let error = [];
+        if (typeof (name) == 'string') {
+          this.name = name;
+        }
+        else {
+          error.push("Invalid name");
+        }
+        if (typeof (address) == 'string') {
+          this.address = address;
+        }
+        else {
+          error.push("Invalid address");
+        }
+        if (error.length != 0) {
+          throw error;
+        }
+        console.log("I just made a ValidPersonDetails object:" + name + " :" + address);
+      }
+    }
+  </script>
+</body>
+
+</html>
