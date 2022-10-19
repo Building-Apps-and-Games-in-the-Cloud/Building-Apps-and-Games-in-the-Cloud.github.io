@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Tiny Survey</title>
+  <link rel="shortcut icon" type="image/x-icon" href="questicon.ico">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+</head>
+
+<body>
+  <div class="container">
+    <h1 class="mb-3 mt-3">Tiny Survey</h1>
+    <h2 class="mb-2 mt-2">robspizza</h2>
+    <p>
+      <input type="radio" name="selections" id="option1">
+      <label for="option1">margherita</label>
+    </p>
+
+    <p>
+      <input type="radio" name="selections" id="option2">
+      <label for="option2">pepperoni</label>
+    </p>
+
+    <p>
+      <input type="radio" name="selections" id="option3">
+      <label for="option3">chicken</label>
+    </p>
+
+    <p>
+      <input type="radio" name="selections" id="option4">
+      <label for="option4">ham and pineapple</label>
+    </p>
+
+    <p>
+      <input type="radio" name="selections" id="option5">
+      <label for="option5">mushroom</label>
+    </p>
+    <p class="mb-2 mt-2">
+      Select the best one and click Send
+    </p>
+    <p>
+      <button class="btn btn-primary" onclick="doSend()">Send</button>
+    </p>
+  </div>
+  <script>
+    function doSend() {
+      window.open("results.html", "_self");
+    }
+
+  </script>
+</body>
+
+</html>
