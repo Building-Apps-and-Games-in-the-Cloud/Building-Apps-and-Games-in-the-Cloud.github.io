@@ -7,37 +7,16 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
-</head>
 
 <body>
   <div class="container">
-    <h1 class="mb-3 mt-3">Tiny Survey</h1>
-    <h2 class="mb-2 mt-2">robspizza</h2>
+    <h1 class="mb-3 mt-3">&#10068; Tiny Survey</h1>
+    <form action="/gottopic" method="POST">
+      <input type="text" name="topic" required class="form-control" spellcheck="false">
+      <button type="submit" class="btn btn-primary mt-1">Open</button>
+    </form>
     <p>
-      margherita: 1
-    </p>
-
-    <p>
-      pepperoni: 3
-    </p>
-
-    <p>
-      chicken: 2
-    </p>
-
-    <p>
-      ham and pineapple: 0
-    </p>
-
-    <p>
-      mushroom: 1
-    </p>
-
-    <p>
-      <button class="btn btn-primary">Reload</button>
-    </p>
-    <p>
-      Click Reload to update the counts
+      Enter the topic of your survey and click Open to open it.
     </p>
   </div>
 </body>

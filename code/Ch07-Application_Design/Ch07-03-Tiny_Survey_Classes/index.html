@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+</head>
+
+<body>
+
+  <h1>Make Something Happen : Tiny Survey classes</h1>
+  <p>In this excercise we will be working with the Tiny Survey classes.
+  </p>
+  <p>
+    To open Developer Tools in the browser press the F12 key. If your keyboard does not have that key, hold down the
+    CTRL and SHIFT keys and press J
+  </p>
+  <p>The console will appear on the right of the page. You may need to confirm that you want to open it. </p>
+  <p>You can find the steps to follow for the exercise in Chapter 7 of the book in the section &quot;Make Something
+    Happen - Tiny Survey classes&quot;</p>
+
+  <script type="text/javascript">
+
+    class Option {
+      constructor(newValue) {
+        this.text = newValue.text;
+        this.count = newValue.count;
+      }
+
+      incrementCount() {
+        this.count = this.count + 1;
+      }
+
+      getCount() {
+        return this.count;
+      }
+    }
+
+    class Survey {
+      constructor(newValue) {
+        this.topic = newValue.topic;
+        this.options = [];
+        newValue.options.forEach(optionValues => {
+          let newOption = new Option(optionValues);
+          this.options.push(newOption);
+        });
+      }
+
+      incrementCount(text) {
+        let option = this.options.find(
+          item => item.text == text);
+        if (option != undefined) {
+          option.incrementCount();
+        }
+      }
+
+      getCounts() {
+        let options = [];
+        this.options.forEach(option => {
+          let countInfo = { text: option.text, count: option.getCount() };
+          options.push(countInfo);
+        });
+        let result = { topic: this.topic, options: options };
+        return result;
+      }
+
+      getOptions() {
+        let options = [];
+        this.options.forEach(option => {
+          let optionInfo = { text: option.text };
+          options.push(optionInfo);
+        });
+        let result = { topic: this.topic, options: options };
+        return result;
+      }
+    }
+
+    class Surveys {
+      constructor() {
+        this.surveys = [];
+      }
+
+      saveSurvey(survey) {
+        this.surveys.push(survey);
+      }
+
+      getSurveyByTopic(topic) {
+        return this.surveys.find(element => element.topic == topic);
+      }
+    }
+
+    function makeSampleSurvey() {
+
+      let newSurveyValues = {
+        topic: "robspizza",
+        options: [
+          { text: "margherita", count: 0 },
+          { text: "pepperoni", count: 0 },
+          { text: "chicken", count: 0 },
+          { text: "ham and pineapple", count: 0 },
+          { text: "mushroom", count: 0 },
+        ]
+      };
+
+      let result = new Survey(newSurveyValues);
+      return result;
+    }
+
+  </script>
+</body>
+
+</html>

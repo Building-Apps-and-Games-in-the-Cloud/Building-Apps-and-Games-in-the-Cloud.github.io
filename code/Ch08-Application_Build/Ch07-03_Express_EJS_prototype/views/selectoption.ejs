@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Tiny Survey Select Option</title>
+</head>
+</head>
+
+<body>
+  <h1>&#10068; Tiny Survey</h1>
+  <h2>robspizza</h2>
+  <p>
+    <input type="radio" name="selections" id="option1">
+    <label for="option1">margherita</label>
+  </p>
+  <p>
+    <input type="radio" name="selections" id="option2">
+    <label for="option2">pepperoni</label>
+  </p>
+  <p>
+    <input type="radio" name="selections" id="option3">
+    <label for="option3">chicken</label>
+  </p>
+  <p>
+    <input type="radio" name="selections" id="option4">
+    <label for="option4">ham and pineapple</label>
+  </p>
+  <p>
+    <input type="radio" name="selections" id="option5">
+    <label for="option5">mushroom</label>
+  </p>
+  <p>
+    Select your preference and click Send
+  </p>
+  <p>
+    <button onclick="doSendSelection()">Send</button>
+  </p>
+  <script>
+    function doSendSelection() {
+      window.open("displayresults.html", "_self");
+    }
+
+  </script>
+</body>
+
+</html>

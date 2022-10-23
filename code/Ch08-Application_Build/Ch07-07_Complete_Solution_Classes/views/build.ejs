@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Tiny Survey</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="container mb-4">
+    <h1 class="mb-3 mt-3">&#10068; Tiny Survey</h1>
+    <h2 class="mb-2 mt-2">
+      <%= topicName %>
+    </h2>
+    <form action="/setoptions/<%=topicName%>" method="POST">
+      <% for(let i=1;i<=numberOfOptions;i++) { %>
+        <p>
+          <input type="text" required class="form-control" 
+                spellcheck="false" value="item<%=i%>" name="option<%=i %>">
+        </p>
+        <% } %>
+          <p>
+            <button type="submit" class="btn btn-primary mt-1">Start</button>
+          </p>
+    </form>
+    <p>
+      Enter your options and press Start to go live.
+    </p>
+  </div>
+</body>
+
+</html>

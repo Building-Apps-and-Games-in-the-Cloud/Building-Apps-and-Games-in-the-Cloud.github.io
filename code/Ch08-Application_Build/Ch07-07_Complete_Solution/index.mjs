@@ -13,7 +13,7 @@ app.set('view-engine', 'ejs');
 app.use(express.urlencoded({ extended: false }));
 
 // Home page
-app.get('/', (request, response) => {
+app.get('/index.html', (request, response) => {
   response.render('index.ejs');
 });
 
