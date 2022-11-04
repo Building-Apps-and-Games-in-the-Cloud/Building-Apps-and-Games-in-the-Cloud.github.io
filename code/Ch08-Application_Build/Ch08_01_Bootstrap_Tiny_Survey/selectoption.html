@@ -3,12 +3,16 @@
 
 <head>
   <title>Tiny Survey Select Option</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 </head>
 
 <body>
-  <h1>&#10068; Tiny Survey</h1>
-  <h2>robspizza</h2>
+  <div class="container">
+
+    <h1 class="mb-3 mt-3">&#10068; Tiny Survey</h1>
+    <h2 class="mb-10 mt-2">robspizza</h2>
   <p>
     <input type="radio" name="selections" id="option1">
     <label for="option1">margherita</label>
@@ -33,7 +37,7 @@
     Select your preference and click Send
   </p>
   <p>
-    <button onclick="doSendSelection()">Send</button>
+    <button class="btn btn-primary mt-1" onclick="doSendSelection();">Send</button>
   </p>
   <script>
     function doSendSelection() {
