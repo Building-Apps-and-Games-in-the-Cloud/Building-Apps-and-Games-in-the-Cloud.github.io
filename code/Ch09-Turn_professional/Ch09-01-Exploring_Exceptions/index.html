@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+</head>
+
+<body>
+
+  <h1>Make Something Happen : Exploring Exceptions</h1>
+  <p>In this excercise we will be working with Exceptions.
+  </p>
+  <p>
+    To open Developer Tools in the browser press the F12 key. If your keyboard does not have that key, hold down the
+    CTRL and SHIFT keys and press J
+  </p>
+  <p>The console will appear on the right of the page. You may need to confirm that you want to open it. </p>
+  <p>You can find the steps to follow for the exercise in Chapter 9 of the book in the section &quot;Make Something
+    Happen - Exploring Exceptions&quot;</p>
+
+  <script type="text/javascript">
+
+    class Option {
+      /**
+       * 
+       * @param {Object} newValue contains a text string and a count number 
+       */
+      constructor(newValue) {
+        this.text = newValue.text;
+        this.count = newValue.count;
+      }
+
+      /**
+       * Increases the count value of this option by 1
+       */
+      incrementCount() {
+        this.count = this.count + 1;
+      }
+
+      /**
+       * 
+       * @returns count value as a number
+       */
+      getCount() {
+        return this.count;
+      }
+    }
+
+    class Survey {
+
+      constructor(newValue) {
+        this.topic = newValue.topic;
+        this.options = [];
+        newValue.options.forEach(optionValues => {
+          let newOption = new Option(optionValues);
+          this.options.push(newOption);
+        });
+      }
+
+      /**
+       * Increments the count for the specified option
+       * @param {string} text the text of the option to be incremented 
+       * @returns true if the increment succeeded
+       */
+      incrementCount(text) {
+        let option = this.options.find(
+          item => item.text == text);
+        if (option != undefined) {
+          option.incrementCount();
+          return true;
+        }
+        else {
+          return false;
+        }
+      }
+
+      /**
+       * Gets the counts for the options in the survey
+       * @returns object containing a topic value and an array of option name and count values
+       */
+      getCounts() {
+        let options = [];
+        this.options.forEach(option => {
+          let countInfo = { text: option.text, count: option.getCount() };
+          options.push(countInfo);
+        });
+        let result = { topic: this.topic, options: options };
+        return result;
+      }
+
+      /**
+       * 
+       * @returns object containing a topic value and an array of option names
+       */
+      getOptions() {
+        let options = [];
+        this.options.forEach(option => {
+          let optionInfo = { text: option.text };
+          options.push(optionInfo);
+        });
+        let result = { topic: this.topic, options: options };
+        return result;
+      }
+    }
+
+    class Surveys {
+      constructor() {
+        this.surveys = [];
+      }
+
+      /**
+       * 
+       * @param {Object} survey object containign a topic value and an array of option values 
+       */
+      saveSurvey(survey) {
+        this.surveys.push(survey);
+      }
+
+      /**
+       *  
+       * @param {String} topic topic of the survey to search for 
+       * @returns 
+       */
+      getSurveyByTopic(topic) {
+        return this.surveys.find(element => element.topic == topic);
+      }
+    }
+
+    class SurveyManager {
+
+      /**
+       * Make a new helper store
+       */
+      constructor() {
+        this.surveys = new Surveys();
+      }
+
+      /**
+       * Stores a survey
+       * @param {Object} newValue topic string and option list  
+       */
+      storeSurvey(newValue) {
+        let errors = "";
+        if (!("topic" in newValue)) {
+          errors = errors + "Missing topic property in storeSurvey\n";
+        }
+        if (!("options" in newValue)) {
+          errors = errors + "Missing options in storeSurvey\n";
+        }
+        else {
+          if (newValue.options instanceof Array) {
+            newValue.options.forEach(option => {
+              if (!("text" in option)) {
+                errors = errors + `Missing text in option in storeSurvey\n`;
+              }
+              if (!("count" in option)) {
+                errors = errors + `Missing count in option ${option.text} in storeSurvey\n`;
+              }
+              else {
+                if (isNaN(option.count)) {
+                  errors = errors + `Count not a number in option ${option.text} in storeSurvey\n`;
+                }
+              }
+            });
+          }
+          else {
+            errors = errors + "Options not an array in storeSurvey\n";
+          }
+        }
+
+        if (errors != "") {
+          throw errors;
+        }
+
+        let survey = new Survey(newValue);
+        this.surveys.saveSurvey(survey);
+      }
+
+      /**
+       * Increment the count for an option in a topic
+       * @param {Object} incDetails topic and option names
+       */
+      incrementCount(incDetails) {
+        let errors = "";
+        if (!("topic" in incDetails)) {
+          errors = errors + "Missing topic property in incrementCount\n";
+        }
+        if (!("option" in incDetails)) {
+          errors = errors + "Missing option in incrementCount\n";
+        }
+        let topic = incDetails.topic;
+        let option = incDetails.option;
+
+        let survey = this.surveys.getSurveyByTopic(topic);
+
+        if (survey == undefined) {
+          errors = errors + `Survey for ${topic} not found in incrementCount`;
+        }
+        else {
+          if (!survey.incrementCount(option)) {
+            errors = errors + `Option ${option} in survey ${topic} not found in incrementCount`;
+          }
+        }
+        return errors;
+      }
+
+      /**
+       * Checks if a survey exists
+       * @param {string} topic topic of the survey
+       * @returns true if the survey exists in the storage
+       */
+      surveyExists(topic) {
+        return this.surveys.getSurveyByTopic(topic) != undefined;
+      }
+
+      /**
+       * 
+       * @param {string} topic of the survey
+       * @returns topic and a list of option names and counts
+       */
+      getCounts(topic) {
+        let errors = "";
+        let survey = this.surveys.getSurveyByTopic(topic);
+        if (survey == undefined) {
+          errors = errors + `Survey with topic ${topic} not found in getCounts`;
+        }
+        else {
+          return survey.getCounts();
+        }
+      }
+
+      /**
+       * 
+       * @param {topic of the survey} topic 
+       * @returns topic and a list of option names
+       */
+      getOptions(topic) {
+        let errors = "";
+        let survey = this.surveys.getSurveyByTopic(topic);
+        if (survey == undefined) {
+          errors = errors + `Survey with topic ${topic} not found in getCounts`;
+        }
+        else {
+          return survey.getOptions();
+        }
+      }
+    }
+
+    let goodSurveyValues = {
+      topic: "robspizza",
+      options: [
+        { text: "margherita", count: 0 },
+        { text: "pepperoni", count: 0 },
+        { text: "chicken", count: 0 },
+        { text: "ham and pineapple", count: 0 },
+        { text: "mushroom", count: 0 }
+      ]
+    };
+
+    let badSurveyValues = {
+    Topic:"bad survey",
+    options: [
+    { text: "margherita", count: "hello" },
+    { text: 99, count: 0 },
+    { text: "chicken"}
+  ]
+};
+
+
+  </script>
+</body>
+
+</html>
