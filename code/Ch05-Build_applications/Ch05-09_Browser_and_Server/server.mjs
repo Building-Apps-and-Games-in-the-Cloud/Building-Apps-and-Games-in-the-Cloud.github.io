@@ -1,7 +1,6 @@
 import http from 'http';
 import fs from 'fs';
 import path from 'path';
-import { Console } from 'console';
 
 const basePath = "./code/Ch05-Build_applications/Ch05-09_Browser_and_Server/";
 
