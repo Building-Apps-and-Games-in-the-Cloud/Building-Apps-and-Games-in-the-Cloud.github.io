@@ -10,7 +10,7 @@ function handlePageRequest(request, response) {
     let filePath = '.' + url;
 
     let fileTypeDecode = {
-        html: "text/HTML",
+        html: "text/html",
         css: "text/css",
         ico: "image/x-icon",
         mjs: "text/javascript",

@@ -8,9 +8,8 @@ function handlePageRequest(request,response){
     response.end(); 
 }
  
-var server = http.createServer(handlePageRequest);
+let server = http.createServer(handlePageRequest);
 
 console.log("Server running");
 
 server.listen(8080);
-

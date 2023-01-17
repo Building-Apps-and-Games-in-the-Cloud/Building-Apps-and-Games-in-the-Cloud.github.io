@@ -10,12 +10,12 @@ function handlePageRequest(request, response) {
     let filePath = '.' + url;
 
     if (fs.existsSync(filePath)) {
-        console.log("     found file OK")
+        console.log("     found file OK");
         response.statusCode = 200;
         let extension = path.extname(url);
         switch (extension) {
             case '.html':
-                response.setHeader('Content-Type', 'text/HTML');
+                response.setHeader('Content-Type', 'text/html');
                 break;
             case '.css':
                 response.setHeader('Content-Type', 'text/css');
