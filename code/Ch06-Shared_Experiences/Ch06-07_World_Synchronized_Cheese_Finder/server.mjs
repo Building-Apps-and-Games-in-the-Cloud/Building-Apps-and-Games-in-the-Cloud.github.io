@@ -10,7 +10,7 @@ var gridWidth = 10;
 var gridHeight = 10;
 
 function getAbsoluteHour(date){
-    let result = (date.getUTCFullYear() * 365 * 24) +
+    let result = (date.getUTCFullYear() * 372 * 24) +
         (date.getUTCMonth() * 31 * 24) +
         (date.getUTCDate() * 24) +
         date.getUTCHours();

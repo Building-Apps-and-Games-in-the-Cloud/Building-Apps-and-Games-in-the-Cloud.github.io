@@ -91,7 +91,7 @@ function handlePageRequest(request, response) {
     }
     else {
         // If it is not a file it might be a command
-        var parsedUrl = url.parse(request.url, true);
+        let parsedUrl = url.parse(request.url, true);
         let json;
         console.log("    local path:" + parsedUrl.pathname);
         switch (parsedUrl.pathname) {

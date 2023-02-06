@@ -11,7 +11,7 @@ var gridHeight = 10;
 
 
 function getAbsoluteHour(date){
-    let result = (date.getFullYear() * 365 * 24) +
+    let result = (date.getFullYear() * 372 * 24) +
         (date.getMonth() * 31 * 24) +
         (date.getDate() * 24) +
         date.getHours();
