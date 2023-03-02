@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">    
+<html>
+
+<head>
+    <title>This in arrow functions</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body onload="makeCountButton();">
+    <p id="mainPar"></p>
+
+    <script>
+
+function makeCountButton() {
+    this.count = 0;
+    let container = document.getElementById("mainPar");
+    let newButton = document.createElement("button");
+    newButton.textContent = "Increment Count";
+    newButton.addEventListener("click", (e) => {
+        console.log(this.count);
+        this.count = this.count + 1;
+        e.target.innerHTML = this.count;
+    });
+    container.appendChild(newButton);
+}
+
+    </script>
+</body>
+
+</html>
