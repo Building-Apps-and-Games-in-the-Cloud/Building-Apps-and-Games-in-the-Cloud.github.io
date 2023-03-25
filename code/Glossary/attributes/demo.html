@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<html>
+
+<head>
+    <title>Attributes and Inner HTML</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+    <p>This page is supposed to allow you to enter your name and then display it when you click Enter. </p>
+    <p>See what happens when you enter HTML into the name. Try:<br> <br> &lt;button&gt; Click me &lt;/button&gt; </p>
+    <input type="text" id="nameInput" value="">
+    <button onclick="doReadName();">Enter</button>
+    <p id="helloPar"></p>
+    <script >
+    function doReadName() {
+        let nameInput = document.getElementById("nameInput");
+        let name = nameInput.value;
+        console.log(name);
+        let helloPar = document.getElementById("helloPar");
+        helloPar.innerHTML = name;    // dangerous
+        //helloPar.innerText = name;    // good
+        }
+    </script>
+</body>
+
+</html>
