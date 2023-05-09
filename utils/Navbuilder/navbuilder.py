@@ -15,7 +15,7 @@ with open(filename) as f:
 rootOffset = ""
 rootDir = 'code'
 links = "<ul>"
-
+example_count = 0
 # Spin through the files in the directory
 for dirName, subdirList, fileList in os.walk(rootDir):
     for fname in fileList:
@@ -28,6 +28,7 @@ for dirName, subdirList, fileList in os.walk(rootDir):
             pagelink = pagelink.replace('\\','/')
             pagelink = "<li>" + pagelink + "</li>"
             links = links + pagelink + "\n"
+            example_count = example_count + 1
 
 links = links + "</ul>"
 
@@ -38,3 +39,4 @@ print(finalPage)
 text_file = open("index.html", "w")
 text_file.write(finalPage)
 text_file.close()
+print("Done: " + str(example_count) + " examples processed.")
